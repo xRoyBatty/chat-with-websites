@@ -188,7 +188,102 @@ list_files('myproject')  # Subdirectory ✅
 
 See `knowledge/04-vps-api-specification.md` for details.
 
-### 3. GitHub vs VPS
+### 3. Context Isolation (Multi-Agent Coordination)
+
+**CRITICAL for Multi-Agent Systems:**
+
+Workers have ZERO conversation context. They cannot:
+- ❌ Remember what coordinator "told" them verbally
+- ❌ Access conversation history
+- ❌ Understand context from previous tasks
+- ❌ Know what other workers did
+
+**ALL coordination happens through files on VPS:**
+
+✅ **Task Queue** (task-queue.json)
+- Coordinator writes tasks
+- Workers read and claim tasks
+
+✅ **Instruction Files** (tasks/task-{id}-instructions.md)
+- Every task must have a complete instruction file
+- Self-contained: objective, requirements, steps, acceptance criteria
+- Workers execute based ONLY on file content
+
+✅ **Context Files** (referenced in tasks)
+- Tasks list required context files
+- Workers read these before executing
+- Examples: docs/spec.md, src/models/base.py
+
+✅ **Status Files** (worker-status.json, agent-comms.jsonl)
+- Workers update their status
+- Coordinator monitors via file reads
+- All communication is asynchronous through files
+
+**Example Task Structure:**
+
+A coordinator cannot say: "Worker, create a user model like we discussed"
+
+Instead, coordinator must:
+
+1. **Create instruction file** (tasks/task-1234-instructions.md):
+```markdown
+# Task: Create User Model
+
+## Objective
+Create a User model with authentication fields
+
+## Requirements
+- SQLAlchemy model in src/models/user.py
+- Fields: id, username, email, password_hash, created_at
+- Password hashing using bcrypt
+
+## Context Files to Read First
+- docs/database-schema.md (database design)
+- src/models/base.py (base model class)
+
+## Steps
+1. Read context files above
+2. Import Base from src/models/base.py
+3. Create User class extending Base
+4. Add all fields with proper types
+5. Implement password hashing with bcrypt
+
+## Acceptance Criteria
+- [ ] File exists: src/models/user.py
+- [ ] All required fields present
+- [ ] Password hashing implemented
+- [ ] Model extends Base correctly
+```
+
+2. **Add to queue** (task-queue.json):
+```json
+{
+  "id": 1234,
+  "description": "Create User model",
+  "instruction_file": "tasks/task-1234-instructions.md",
+  "context_files": [
+    "docs/database-schema.md",
+    "src/models/base.py"
+  ],
+  "status": "pending"
+}
+```
+
+3. **Worker discovers task:**
+- Reads task-queue.json (finds task #1234)
+- Claims task (updates status to in_progress)
+- Reads tasks/task-1234-instructions.md
+- Reads docs/database-schema.md
+- Reads src/models/base.py
+- Executes based on instruction file
+- Saves result to VPS
+- Updates task-queue.json (status: completed)
+
+**No conversation context needed - everything is in files.**
+
+See `knowledge/02-vps-multi-agent-architecture.md` and `knowledge/05-task-queue-coordination.md` for complete details.
+
+### 4. GitHub vs VPS
 
 **Remember:**
 - GitHub repo = Instructions and tooling ONLY

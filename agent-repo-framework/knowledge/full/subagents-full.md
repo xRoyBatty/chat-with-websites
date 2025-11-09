@@ -1,5 +1,44 @@
 # Subagent Complete Guide
 
+## ⚠️ CRITICAL: Subagent Context Isolation
+
+**ALL subagents (Task tool and custom @agents) have ZERO conversation context.**
+
+This is the most important constraint to understand:
+
+✅ **What subagents CAN access:**
+- Files in the repository (via Read tool)
+- Their own prompt (what you tell them in Task/invoke)
+- Results from their tool calls
+
+❌ **What subagents CANNOT access:**
+- Conversation history from main session
+- Things discussed with the user
+- Context from previous subagent invocations
+- Variables or state from calling agent
+
+**Implication:** Every subagent invocation must be self-contained. If a subagent needs context, you must:
+1. Write context to files
+2. Tell subagent which files to read
+3. Include complete instructions in prompt
+
+**Example:**
+```python
+# WRONG - subagent has no context
+Task("Fix the auth bug we discussed earlier")
+
+# CORRECT - self-contained with file reference
+files_to_read = ["docs/auth-bug-report.md", "src/auth.py"]
+Task("Read auth-bug-report.md for bug details, then fix auth.py accordingly")
+```
+
+This applies to:
+- Task tool subagents (general-purpose, Explore, Plan)
+- Custom @agents defined in .claude/agents/
+- ALL agent invocations are stateless
+
+---
+
 ## Table of Contents
 1. [What Are Subagents?](#what-are-subagents)
 2. [Subagent Use Cases](#subagent-use-cases)
@@ -963,6 +1002,10 @@ def handle_stop_hook(context):
 
 ## Context Management
 
+### ⚠️ Context Management (File-Based Only)
+
+**CRITICAL:** The context you can "manage" is what you pass in the prompt and what files the subagent reads. Subagents have NO access to conversation history.
+
 ### 1. Prompt Context
 
 **Best Practice**: Include relevant context in spawn prompt.
@@ -1531,6 +1574,93 @@ while has_pending_tasks():
     status = get_queue_status()
     print(f"Progress: {status['completed']}/{status['total']}")
     time.sleep(30)
+```
+
+---
+
+## Context Isolation Examples
+
+### Example 1: Research Task (WRONG vs CORRECT)
+
+**WRONG (assumes conversation context):**
+```python
+# User said: "I'm building a Flask API for user management"
+Task("Research best practices for the API we're building")
+# Subagent: "What API? I have no context."
+```
+
+**CORRECT (self-contained):**
+```python
+# Write context to file first
+write_to_file("context/current-project.md", """
+# Current Project
+Building a Flask API for user management
+
+## Requirements
+- User CRUD operations
+- JWT authentication
+- PostgreSQL database
+""")
+
+# Now task is self-contained
+Task("""
+Read context/current-project.md for project details.
+Research best practices for Flask user management APIs.
+Focus on: JWT auth, database models, REST endpoints.
+Write findings to research/flask-api-best-practices.md
+""")
+```
+
+### Example 2: Code Review (WRONG vs CORRECT)
+
+**WRONG (assumes context):**
+```python
+# You just wrote src/models/user.py
+Task("Review the User model I just created")
+# Subagent: "What User model? Where?"
+```
+
+**CORRECT (file reference):**
+```python
+Task("""
+Read src/models/user.py and review the User model.
+Check for:
+- SQL injection vulnerabilities
+- Password hashing security
+- Field validation
+- Database indexing
+
+Write review to code-review/user-model-review.md
+""")
+```
+
+### Example 3: Multi-Step Workflow (WRONG vs CORRECT)
+
+**WRONG (assumes memory between invocations):**
+```python
+Task("Research database options")
+# ... subagent writes findings ...
+Task("Now recommend the best option")
+# Subagent: "Best option for what? I don't remember the research."
+```
+
+**CORRECT (file-based state):**
+```python
+Task("""
+Research database options for Python web apps.
+Consider: PostgreSQL, MySQL, SQLite.
+Write comparison to research/db-comparison.md
+""")
+
+# Later, reference the file
+Task("""
+Read research/db-comparison.md.
+Based on that comparison, recommend best option for:
+- Flask app
+- 10K users expected
+- Needs complex queries
+Write recommendation to research/db-recommendation.md
+""")
 ```
 
 ---

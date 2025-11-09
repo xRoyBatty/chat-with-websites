@@ -29,6 +29,8 @@ Array of task objects:
   {
     "id": 1731159000123,
     "description": "Create user authentication API endpoint",
+    "instruction_file": "tasks/task-1731159000123-instructions.md",
+    "context_files": ["docs/api-spec.md", "src/models/user.py"],
     "assigned_to": "worker-backend",
     "status": "pending",
     "created_at": "2025-11-09T10:00:00",
@@ -36,11 +38,18 @@ Array of task objects:
     "claimed_at": null,
     "completed_by": null,
     "completed_at": null,
-    "result": null
+    "result": null,
+    "metadata": {
+      "working_directory": "src/api",
+      "acceptance_criteria": ["Tests pass", "Coverage > 80%"],
+      "estimated_minutes": 30
+    }
   },
   {
     "id": 1731159000124,
     "description": "Write tests for auth endpoint",
+    "instruction_file": "tasks/task-1731159000124-instructions.md",
+    "context_files": ["src/api/auth.py", "tests/conftest.py"],
     "assigned_to": null,
     "status": "in_progress",
     "created_at": "2025-11-09T10:00:00",
@@ -48,11 +57,18 @@ Array of task objects:
     "claimed_at": "2025-11-09T10:02:00",
     "completed_by": null,
     "completed_at": null,
-    "result": null
+    "result": null,
+    "metadata": {
+      "working_directory": "tests/api",
+      "acceptance_criteria": ["All tests pass", "Coverage > 90%"],
+      "estimated_minutes": 20
+    }
   },
   {
     "id": 1731159000125,
     "description": "Build React login component",
+    "instruction_file": "tasks/task-1731159000125-instructions.md",
+    "context_files": ["docs/ui-design.md", "src/components/Form.jsx"],
     "assigned_to": "worker-frontend",
     "status": "completed",
     "created_at": "2025-11-09T10:00:00",
@@ -62,7 +78,13 @@ Array of task objects:
     "completed_at": "2025-11-09T10:15:00",
     "result": {
       "files_created": ["src/components/Login.jsx"],
+      "tests_passed": true,
       "status": "success"
+    },
+    "metadata": {
+      "working_directory": "src/components",
+      "acceptance_criteria": ["Component renders", "Form validation works"],
+      "estimated_minutes": 15
     }
   }
 ]
@@ -76,10 +98,16 @@ pending → in_progress → completed
 **Fields:**
 - `id`: Unique identifier (timestamp in milliseconds)
 - `description`: Human-readable task description
+- `instruction_file`: Path to complete task instructions (REQUIRED for context-free workers)
+- `context_files`: Array of files worker should read before executing
 - `assigned_to`: Specific worker ID, or `null` for any worker
 - `status`: Current state (pending, in_progress, completed)
 - `claimed_by`: Worker that claimed the task
 - `result`: Optional result data from worker
+- `metadata`: Optional object with:
+  - `working_directory`: Where task should be executed
+  - `acceptance_criteria`: List of requirements for completion
+  - `estimated_minutes`: Time estimate for planning
 
 ### 2. Worker Status (worker-status.json)
 
@@ -156,23 +184,34 @@ JSON Lines format for agent messages:
 
 #### add_task()
 ```python
-def add_task(task_description, assigned_to=None):
+def add_task(description, instruction_file, context_files=None, assigned_to=None, metadata=None):
     """
     Add a new task to the queue
 
     Args:
-        task_description (str): What needs to be done
+        description (str): Short task description
+        instruction_file (str): Path to complete task instructions
+        context_files (list|None): Files worker should read for context
         assigned_to (str|None): Specific worker ID, or None for any
+        metadata (dict|None): Optional metadata (working_dir, acceptance criteria, etc.)
 
     Returns:
         dict: The created task object
     """
     task = {
         "id": int(time.time() * 1000),
-        "description": task_description,
+        "description": description,
+        "instruction_file": instruction_file,
+        "context_files": context_files or [],
         "assigned_to": assigned_to,
         "status": "pending",
-        "created_at": datetime.now().isoformat()
+        "created_at": datetime.now().isoformat(),
+        "claimed_by": None,
+        "claimed_at": None,
+        "completed_by": None,
+        "completed_at": None,
+        "result": None,
+        "metadata": metadata or {}
     }
 
     queue = read_task_queue()
@@ -184,11 +223,49 @@ def add_task(task_description, assigned_to=None):
 
 **Usage:**
 ```python
-# Any worker can take this
-add_task("Create database migration for users table")
+# 1. First, create the instruction file
+instruction_content = """
+# Task: Create User Model
 
-# Specific worker assignment
-add_task("Build React dashboard", assigned_to="worker-frontend")
+## Objective
+Create SQLAlchemy User model with authentication
+
+## Requirements
+- Model in src/models/user.py
+- Fields: id, username, email, password_hash, created_at
+- Password hashing with bcrypt
+
+## Context
+Read these files first for background:
+- docs/database-schema.md
+- src/models/base.py
+
+## Steps
+1. Import Base from base.py
+2. Create User class
+3. Add fields with proper types
+4. Implement password hashing
+
+## Acceptance Criteria
+- File created
+- Password hashing works
+- Model extends Base
+"""
+
+deploy_file('tasks/task-123-instructions.md', instruction_content)
+
+# 2. Add task to queue with instruction file reference
+add_task(
+    description="Create User model with authentication",
+    instruction_file="tasks/task-123-instructions.md",
+    context_files=["docs/database-schema.md", "src/models/base.py"],
+    assigned_to="worker-backend",
+    metadata={
+        "working_directory": "src/models",
+        "acceptance_criteria": ["File exists", "Tests pass"],
+        "estimated_minutes": 30
+    }
+)
 ```
 
 #### get_active_workers()
