@@ -1,0 +1,209 @@
+[
+  {
+    "group": "vital",
+    "words": [
+      {
+        "text": "Complete split view implementation for multiple files in separate windows",
+        "definition": "Finish the split view functionality to allow viewing multiple files simultaneously in different panels",
+        "example": "Being able to view HTML code and its rendered output side by side",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Add custom file organization, tagging, and grouping system",
+        "definition": "Create a system to organize files regardless of their location, with custom tags and groups",
+        "example": "Tagging files as 'Project X' even if they're in different directories",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Implement session state persistence",
+        "definition": "Save open files, cursor positions, and editor state between browser refreshes",
+        "example": "Reopening the application and finding all previously open files still available",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      }
+    ]
+  },
+  {
+    "group": "high_priority",
+    "words": [
+      {
+        "text": "Implement file refresh after changes",
+        "definition": "Update file browser and content when files change on disk",
+        "example": "File browser automatically reflects changes when a file is saved or modified externally",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Add file searching functionality",
+        "definition": "Search for files by name, content, or tags across the file system",
+        "example": "Finding all JavaScript files containing 'function calculateTotal'",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Improve mobile responsiveness",
+        "definition": "Enhance UI layout and controls for smaller screens",
+        "example": "Collapsible file browser and touch-friendly controls on mobile devices",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Enhance PDF viewing capabilities",
+        "definition": "Improve PDF viewer with better navigation, zoom, and form interaction",
+        "example": "Filling out PDF forms and navigating through bookmarks",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Implement version comparison view",
+        "definition": "Add ability to compare different versions of a file",
+        "example": "Side-by-side diff view showing changes between two saved versions",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      }
+    ]
+  },
+  {
+    "group": "medium_priority",
+    "words": [
+      {
+        "text": "Implement drag-and-drop tab reordering",
+        "definition": "Allow users to reorder tabs by dragging them",
+        "example": "Dragging the 'index.html' tab to place it next to 'styles.css'",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Add more file format support",
+        "definition": "Extend support for additional document types and programming languages",
+        "example": "Adding support for R, Rust, or Kotlin code files",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Add image upload functionality in WYSIWYG editor",
+        "definition": "Enable uploading and embedding images in the HTML editor",
+        "example": "Drag-and-drop image into HTML document while editing",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Add authentication middleware",
+        "definition": "Implement user authentication for secure access control",
+        "example": "Login system with user-specific file access permissions",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Enhance DOCX and spreadsheet editing capabilities",
+        "definition": "Move beyond view-only mode for Office documents",
+        "example": "Editing a Word document and saving changes back to DOCX format",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Implement file comparison tools",
+        "definition": "Add tools to compare content between different files",
+        "example": "Side-by-side comparison of two JavaScript files with highlighted differences",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      }
+    ]
+  },
+  {
+    "group": "low_priority",
+    "words": [
+      {
+        "text": "Add more notification types to status bar",
+        "definition": "Extend status notifications with more types and interactions",
+        "example": "Interactive notifications with action buttons for common operations",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Add status reporting to server scripts",
+        "definition": "Enhance start/stop scripts with more detailed status information",
+        "example": "Detailed server health information in stop_server.sh output",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Add automatic scheduling to backup script",
+        "definition": "Implement scheduled backups of project files",
+        "example": "Configuring daily backups at 2AM with rotation policy",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Add drag-and-drop file operations",
+        "definition": "Enable dragging files between directories in the file browser",
+        "example": "Dragging multiple files from one folder to another",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Add keyboard shortcuts for common actions",
+        "definition": "Implement configurable keyboard shortcuts",
+        "example": "Using Ctrl+S to save, Ctrl+Tab to switch between tabs",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Implement themes and UI customization",
+        "definition": "Allow users to customize the interface with different themes",
+        "example": "Switching between light, dark, and custom color themes",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      }
+    ]
+  },
+  {
+    "group": "probably_overkill",
+    "words": [
+      {
+        "text": "Implement collaborative editing",
+        "definition": "Add real-time collaborative document editing with WebSockets",
+        "example": "Multiple users editing the same document simultaneously with cursors visible",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Add LLM integration for text processing",
+        "definition": "Connect with AI services for automatic text processing",
+        "example": "Right-click menu option to 'Summarize with AI' or 'Improve writing'",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Implement cloud storage integration",
+        "definition": "Connect to Google Drive, Dropbox, or other cloud services",
+        "example": "Seamlessly opening and saving files to Google Drive",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Add document analysis features",
+        "definition": "Extract insights, statistics, and metadata from documents",
+        "example": "Analyzing code quality metrics or extracting key entities from text",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Implement translation services",
+        "definition": "Add document translation capabilities",
+        "example": "Translating a document from English to Spanish with one click",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      },
+      {
+        "text": "Create a plugin architecture",
+        "definition": "Implement a system for third-party plugins and extensions",
+        "example": "Installing a 'GitHub integration' plugin from a marketplace",
+        "srs": "new",
+        "highlight": "#e9f5ff"
+      }
+    ]
+  }
+]

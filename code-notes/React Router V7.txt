@@ -1,0 +1,3396 @@
+<INTRODUCTION>
+Incremental Path to React 19: React Conf Follow-Up
+Ryan Florence presenting at React Conf
+
+Ryan Florence
+Co-Founder
+Update (Dec 2024): React Router v7 has been released!
+
+We now recommend starting all new projects with React Router v7 and upgrading existing Remix apps.
+
+Last week I gave a talk about React Router and Remix at React Conf and we posted an announcement here. Now that the dust has settled, I wanted to provide some more insight into the decision announced there and answer some common questions.
+
+tl;dr
+For React Router
+
+React Router v6 to v7 will be a non-breaking upgrade
+The Vite plugin from Remix is coming to React Router in v7
+The Vite plugin simply makes existing React Router features more convenient to use, but it isn't required to use React Router v7
+v7 will support both React 18 and React 19
+For Remix
+
+What would have been Remix v3 is React Router v7
+Remix v2 to React Router v7 will be a non-breaking upgrade
+Remix is coming back better than ever in a future release with an incremental adoption strategy enabled by these changes
+For Both
+
+React Router v7 comes with new features not in Remix or React Router today: RSC, server actions, static pre-rendering, and enhanced Type Safety across the board
+Background
+Remix Became a Wrapper
+Remix features have historically found their way back to React Router. In fact, for the last year or so all new features start in React Router and Remix simply calls into it.
+
+At this point, Remix is just a Vite plugin that makes React Router more convenient to use and deploy. Outside of the plugin, Remix pretty much just re-exports React Router.
+
+Splitting the code, docs, issues, discussions, and development between two projects serves no technical purpose anymore. Instead it adds artificial overhead for us and confusion for users.
+
+So, we're moving the Vite plugin to React Router and calling it v7.
+
+RSC Changes Remix
+React 19 with RSC allows us to rethink assumptions about how to build React apps that cross the center of the stack. It changes routing, bundling, data loading, revalidation, pending states, almost everything!
+
+After experimenting with RSC, and running it in production with Hydrogen v1 for years now, we think we've designed a new API for Remix that's simpler and more powerful than ever. Internally we've code-named it "Reverb". At an in-person preview with folks from across Shopify, one of the engineers said quietly: "Wow, that's really beautiful".
+
+We think it's beautiful too, but it's very different! (We'll show it to you soon, but not yet.)
+
+The model was different enough that it seemed like we should name it something else to distinguish it from Remix today and to enable simpler incremental adoption by running both versions in parallel.
+
+But we love Remix! The brand, the community, the ethos.
+
+When Remix apps upgrade to React Router v7, this opens up space in your package.json to run both current and future Remix in parallel for a future incremental upgrade path. It also let's us keep the name!
+
+So while it may look like needless package shuffling, the technical fact is that Remix today is just a wrapper and this shuffling enables the smoothest upgrade path into the future.
+
+Frequently Asked Questions
+What Does This Mean for React Router?
+React Router v7 will not require Vite. You can keep using it exactly as you do today.
+
+Upgrading from v6 to v7 will be a non-breaking upgrade as long as you're up to date on current future flags in v6.
+
+If you adopt the Vite plugin, you'll get easy access to automatic code-splitting, SSR, RSC, static pre-rendering, the route module API with server loaders, client loaders, actions, and more. These features are all possible by combining a bundler with already existing features in React Router.
+
+One more time for people on Reddit: if you are up-to-date on current future flags, you can simply upgrade to v7 and change nothing.
+
+Once upgraded to v7, you can adopt the Vite plugin and incrementally update parts of your code to take advantage of it if you would like to, but it is not required.
+
+(Did anybody notice the chiasmus? Kent?)
+
+What Does This Mean for Remix?
+Upgrading from Remix v2 to React Router v7 will be a non-breaking upgrade if you are caught up on current Remix future flags.
+
+Of course, you'll need to update your package.json to the new React Router packages and update your imports in app code, but we expect to have a codemod to do this for you.
+
+What Should I Use Today?
+We recommend using Remix today. You can deploy a single page app if you're not interested in server rendering, or take advantage of React and Remix's server features like streaming, server loaders, actions and more.
+
+New Features and the Path to React 19
+The future of React involves servers and build workflows to take advantage of React's new full stack composition story. Rewriting your React Router apps to Remix or another framework isn't a good enough answer for us.
+
+Moving the Vite plugin to React Router provides a way for apps using either project to incrementally adopt new features where you need them, without having to mess with code that's working just fine today. Features like:
+
+SSR
+RSC
+Server actions
+Static pre-rendering (including RSC)
+You'll also get enhanced type safety across the board from route configuration, params, to loader and action data, even type hints on <Link>, navigate for known paths in your app.
+
+React 19 has challenged the assumptions of the last 10 years, these changes give React Router and Remix an incremental path into the next 10.
+
+Build Better Websites! (incrementally)
+
+</INTRODUCTION>
+<CHANGELOG_RR>
+React Router Releases
+This page lists all releases/release notes for React Router back to v6.0.0. For releases prior to v6, please refer to the Github Releases Page.
+
+We manage release notes in this file instead of the paginated Github Releases Page for 2 reasons:
+
+Pagination in the Github UI means that you cannot easily search release notes for a large span of releases at once
+The paginated Github interface also cuts off longer releases notes without indication in list view, and you need to click into the detail view to see the full set of release notes
+v7.1.1
+Date: 2024-12-23
+
+Patch Changes
+@react-router/dev - Fix for a crash when optional args are passed to the CLI (#12609)
+Full Changelog: v7.1.0...v7.1.1
+
+v7.1.0
+Date: 2024-12-20
+
+Minor Changes
+Add support for Vite v6 (#12469)
+Patch Changes
+react-router - Throw unwrapped Single Fetch redirect to align with pre-Single Fetch behavior (#12506)
+react-router - Ignore redirects when inferring loader data types (#12527)
+react-router - Remove <Link prefetch> warning which suffers from false positives in a lazy route discovery world (#12485)
+create-react-router - Fix missing fs-extra dependency (#12556)
+@react-router/dev/@react-router/serve - Properly initialize NODE_ENV if not already set for compatibility with React 19 (#12578)
+@react-router/dev - Remove the leftover/unused abortDelay prop from ServerRouter and update the default entry.server.tsx to use the new streamTimeout value for Single Fetch (#12478)
+The abortDelay functionality was removed in v7 as it was coupled to the defer implementation from Remix v2, but this removal of this prop was missed
+If you were still using this prop in your entry.server file, it's likely your app is not aborting streams as you would expect and you will need to adopt the new streamTimeout value introduced with Single Fetch
+@react-router/fs-routes - Throw error in flatRoutes if routes directory is missing (#12407)
+Changes by Package
+Full Changelog: v7.0.2...v7.1.0
+
+v7.0.2
+Date: 2024-12-02
+
+Patch Changes
+react-router - Temporarily only use one build in export map so packages can have a peer dependency on react router (#12437)
+@react-router/dev - Support moduleResolution Node16 and NodeNext (#12440)
+@react-router/dev - Generate wide matches and params types for child routes (#12397)
+At runtime, matches includes child route matches and params include child route path parameters
+But previously, we only generated types for parent routes and the current route in matches and params
+To align our generated types more closely to the runtime behavior, we now generate more permissive, wider types when accessing child route information
+Full Changelog: v7.0.1...v7.0.2
+
+v7.0.1
+Date: 2024-11-22
+
+Patch Changes
+@react-router/dev - Ensure typegen file watcher is cleaned up when Vite dev server restarts (#12331)
+@react-router/dev - Pass route error to ErrorBoundary as a prop (#12338)
+Full Changelog: v7.0.0...v7.0.1
+
+v7.0.0
+Date: 2024-11-21
+
+Breaking Changes
+Package Restructuring
+The react-router-dom, @remix-run/react, @remix-run/server-runtime, and @remix-run/router have been collapsed into the react-router package
+To ease migration, react-router-dom is still published in v7 as a re-export of everything from react-router
+The @remix-run/cloudflare-pages and @remix-run/cloudflare-workers have been collapsed into @react-router/cloudflare package`
+The react-router-dom-v5-compat and react-router-native packages are removed starting with v7
+Removed Adapter Re-exports
+Remix v2 used to re-export all common @remix-run/server-runtime APIs through the various runtime packages (node, cloudflare, deno) so that you wouldn't need an additional @remix-run/server-runtime dependency in your package.json. With the collapsing of packages into react-router, these common APIs are now no longer re-exported through the runtime adapters. You should import all common APIs from react-router, and only import runtime-specific APIs from the runtime packages:
+
+// Runtime-specific APIs
+import { createFileSessionStorage } from "@react-router/node";
+// Runtime-agnostic APIs
+import { redirect, useLoaderData } from "react-router";
+Removed APIs
+The following APIs have been removed in React Router v7:
+
+json
+defer
+unstable_composeUploadHandlers
+unstable_createMemoryUploadHandler
+unstable_parseMultipartFormData
+Minimum Versions
+React Router v7 requires the following minimum versions:
+
+node@20
+React Router no longer provides an installGlobals method to polyfill the fetch API
+react@18, react-dom@18
+Adopted Future Flag Behaviors
+Remix and React Router follow an API Development Strategy leveraging "Future Flags" to avoid introducing a slew of breaking changes in a major release. Instead, breaking changes are introduced in minor releases behind a flag, allowing users to opt-in at their convenience. In the next major release, all future flag behaviors become the default behavior.
+
+The following previously flagged behaviors are now the default in React Router v7:
+
+React Router v6 flags
+future.v7_relativeSplatPath
+future.v7_startTransition
+future.v7_fetcherPersist
+future.v7_normalizeFormMethod
+future.v7_partialHydration
+future.v7_skipActionStatusRevalidation
+Remix v2 flags
+future.v3_fetcherPersist
+future.v3_relativeSplatPath
+future.v3_throwAbortReason
+future.v3_singleFetch
+future.v3_lazyRouteDiscovery
+future.v3_optimizeDeps
+Vite Compiler
+The Remix Vite plugin is the proper way to build full-stack SSR apps using React Router v7. The former esbuild-based compiler is no longer available.
+
+Renamed vitePlugin and cloudflareDevProxyVitePlugin
+
+For Remix consumers migrating to React Router, the vitePlugin and cloudflareDevProxyVitePlugin exports have been renamed and moved (#11904)
+
+-import {
+-  vitePlugin as remix,
+-  cloudflareDevProxyVitePlugin,
+-} from "@remix/dev";
+
++import { reactRouter } from "@react-router/dev/vite";
++import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
+Removed manifest option
+
+For Remix consumers migrating to React Router, the Vite plugin's manifest option has been removed. The manifest option been superseded by the more powerful buildEnd hook since it's passed the buildManifest argument. You can still write the build manifest to disk if needed, but you'll most likely find it more convenient to write any logic depending on the build manifest within the buildEnd hook itself. (#11573)
+
+If you were using the manifest option, you can replace it with a buildEnd hook that writes the manifest to disk like this:
+
+// react-router.config.ts
+import { type Config } from "@react-router/dev/config";
+import { writeFile } from "node:fs/promises";
+
+export default {
+  async buildEnd({ buildManifest }) {
+    await writeFile(
+      "build/manifest.json",
+      JSON.stringify(buildManifest, null, 2),
+      "utf-8"
+    );
+  },
+} satisfies Config;
+Exposed Router Promises
+Because React 19 will have first-class support for handling promises in the render pass (via React.use and useAction), we are now comfortable exposing the promises for the APIs that previously returned undefined:
+
+useNavigate()
+useSubmit()
+useFetcher().load
+useFetcher().submit
+useRevalidator().revalidate()
+Other Notable Changes
+routes.ts
+When using the React Router Vite plugin, routes are defined in app/routes.ts. Route config is exported via the routes export, conforming to the RouteConfig type. Route helper functions route, index, and layout are provided to make declarative type-safe route definitions easier.
+
+// app/routes.ts
+import {
+  type RouteConfig,
+  route,
+  index,
+  layout,
+} from "@react-router/dev/routes";
+
+export const routes: RouteConfig = [
+  index("./home.tsx"),
+  route("about", "./about.tsx"),
+
+  layout("./auth/layout.tsx", [
+    route("login", "./auth/login.tsx"),
+    route("register", "./auth/register.tsx"),
+  ]),
+
+  route("concerts", [
+    index("./concerts/home.tsx"),
+    route(":city", "./concerts/city.tsx"),
+    route("trending", "./concerts/trending.tsx"),
+  ]),
+];
+For Remix consumers migrating to React Router, you can still configure file system routing within routes.ts using the @react-router/fs-routes package. A minimal route config that reproduces the default Remix setup looks like this:
+
+// app/routes.ts
+import { type RouteConfig } from "@react-router/dev/routes";
+import { flatRoutes } from "@react-router/fs-routes";
+
+export const routes: RouteConfig = flatRoutes();
+If you want to migrate from file system routing to config-based routes, you can mix and match approaches by spreading the results of the async flatRoutes function into the array of config-based routes.
+
+// app/routes.ts
+import { type RouteConfig, route } from "@react-router/dev/routes";
+import { flatRoutes } from "@react-router/fs-routes";
+
+export const routes: RouteConfig = [
+  // Example config-based route:
+  route("/hello", "./routes/hello.tsx"),
+
+  // File system routes scoped to a different directory:
+  ...(await flatRoutes({
+    rootDirectory: "fs-routes",
+  })),
+];
+If you were using Remix's routes option to use alternative file system routing conventions, you can adapt these to the new RouteConfig format using @react-router/remix-config-routes-adapter.
+
+For example, if you were using Remix v1 route conventions in Remix v2, you can combine @react-router/remix-config-routes-adapter with @remix-run/v1-route-convention to adapt this to React Router:
+
+// app/routes.ts
+import { type RouteConfig } from "@react-router/dev/routes";
+import { remixConfigRoutes } from "@react-router/remix-config-routes-adapter";
+import { createRoutesFromFolders } from "@remix-run/v1-route-convention";
+
+export const routes: RouteConfig = remixConfigRoutes(async (defineRoutes) => {
+  return createRoutesFromFolders(defineRoutes, {
+    ignoredFilePatterns: ["**/.*", "**/*.css"],
+  });
+});
+Also note that, if you were using Remix's routes option to define config-based routes, you can also adapt these to the new RouteConfig format using @react-router/remix-config-routes-adapter with minimal code changes. While this makes for a fast migration path, we recommend migrating any config-based routes from Remix to the new RouteConfig format since it's a fairly straightforward migration.
+
+// app/routes.ts
+-import { type RouteConfig } from "@react-router/dev/routes";
++import { type RouteConfig, route } from "@react-router/dev/routes";
+-import { remixConfigRoutes } from "@react-router/remix-config-routes-adapter";
+
+-export const routes: RouteConfig = remixConfigRoutes(async (defineRoutes) => {
+-  defineRoutes((route) => {
+-    route("/parent", "./routes/parent.tsx", () => [
+-      route("/child", "./routes/child.tsx"),
+-    ]);
+-  });
+-});
++export const routes: RouteConfig = [
++  route("/parent", "./routes/parent.tsx", [
++    route("/child", "./routes/child.tsx"),
++  ]),
++];
+Typesafety improvements
+React Router now generates types for each of your route modules and passes typed props to route module component exports (#11961, #12019). You can access those types by importing them from ./+types/<route filename without extension>.
+
+See How To > Route Module Type Safety and Explanations > Type Safety for more details.
+
+Prerendering
+React Router v7 includes a new prerender config in the vite plugin to support SSG use-cases. This will pre-render your .html and .data files at build time and so you can serve them statically at runtime from a running server or a CDN (#11539)
+
+export default defineConfig({
+  plugins: [
+    reactRouter({
+      async prerender({ getStaticPaths }) {
+        let slugs = await fakeGetSlugsFromCms();
+        return [
+          ...getStaticPaths(),
+          ...slugs.map((slug) => `/product/${slug}`),
+        ];
+      },
+    }),
+    tsconfigPaths(),
+  ],
+});
+
+async function fakeGetSlugsFromCms() {
+  await new Promise((r) => setTimeout(r, 1000));
+  return ["shirt", "hat"];
+}
+Major Changes (react-router)
+Remove the original defer implementation in favor of using raw promises via single fetch and turbo-stream (#11744)
+This removes these exports from React Router:
+defer
+AbortedDeferredError
+type TypedDeferredData
+UNSAFE_DeferredData
+UNSAFE_DEFERRED_SYMBOL
+Collapse packages into react-router(#11505)
+@remix-run/router
+react-router-dom
+@remix-run/server-runtime
+@remix-run/testing
+As a note, the react-router-dom package is maintained to ease adoption but it simply re-exports all APIs from react-router
+Drop support for Node 16, React Router SSR now requires Node 18 or higher (#11391, #11690)
+Remove future.v7_startTransition flag (#11696)
+Expose the underlying router promises from the following APIs for composition in React 19 APIs: (#11521)
+Remove future.v7_normalizeFormMethod future flag (#11697)
+Imports/Exports cleanup (#11840)
+Removed the following exports that were previously public API from @remix-run/router
+types
+AgnosticDataIndexRouteObject
+AgnosticDataNonIndexRouteObject
+AgnosticDataRouteMatch
+AgnosticDataRouteObject
+AgnosticIndexRouteObject
+AgnosticNonIndexRouteObject
+AgnosticRouteMatch
+AgnosticRouteObject
+TrackedPromise
+unstable_AgnosticPatchRoutesOnMissFunction
+Action -> exported as NavigationType via react-router
+Router exported as RemixRouter to differentiate from RR's <Router>
+API
+getToPathname (@private)
+joinPaths (@private)
+normalizePathname (@private)
+resolveTo (@private)
+stripBasename (@private)
+createBrowserHistory -> in favor of createBrowserRouter
+createHashHistory -> in favor of createHashRouter
+createMemoryHistory -> in favor of createMemoryRouter
+createRouter
+createStaticHandler -> in favor of wrapper createStaticHandler in RR Dom
+getStaticContextFromError
+Removed the following exports that were previously public API from react-router
+Hash
+Pathname
+Search
+Remove future.v7_prependBasename from the internalized @remix-run/router package (#11726)
+Remove future.v7_throwAbortReason from internalized @remix-run/router package (#11728)
+Add exports field to all packages (#11675)
+Renamed RemixContext to FrameworkContext (#11705)
+Update the minimum React version to 18 (#11689)
+PrefetchPageDescriptor replaced by PageLinkDescriptor (#11960)
+Remove the future.v7_partialHydration flag (#11725)
+This also removes the <RouterProvider fallbackElement> prop
+To migrate, move the fallbackElement to a hydrateFallbackElement/HydrateFallback on your root route
+Also worth nothing there is a related breaking changer with this future flag:
+Without future.v7_partialHydration (when using fallbackElement), state.navigation was populated during the initial load
+With future.v7_partialHydration, state.navigation remains in an "idle" state during the initial load
+Remove future.v7_relativeSplatPath future flag (#11695)
+Remove remaining future flags (#11820)
+React Router v7_skipActionErrorRevalidation
+Remix v3_fetcherPersist, v3_relativeSplatPath, v3_throwAbortReason
+Rename createRemixStub to createRoutesStub (#11692)
+Remove @remix-run/router deprecated detectErrorBoundary option in favor of mapRouteProperties (#11751)
+Add react-router/dom subpath export to properly enable react-dom as an optional peerDependency (#11851)
+This ensures that we don't blindly import ReactDOM from "react-dom" in <RouterProvider> in order to access ReactDOM.flushSync(), since that would break createMemoryRouter use cases in non-DOM environments
+DOM environments should import from react-router/dom to get the proper component that makes ReactDOM.flushSync() available:
+If you are using the Vite plugin, use this in your entry.client.tsx:
+import { HydratedRouter } from 'react-router/dom'
+If you are not using the Vite plugin and are manually calling createBrowserRouter/createHashRouter:
+import { RouterProvider } from "react-router/dom"
+Remove future.v7_fetcherPersist flag (#11731)
+Allow returning undefined from loaders and actions (#11680, #12057)
+Use createRemixRouter/RouterProvider in entry.client instead of RemixBrowser (#11469)
+Remove the deprecated json utility (#12146)
+You can use Response.json if you still need to construct JSON responses in your app
+Major Changes (@react-router/*)
+Remove future.v3_singleFetch flag (#11522)
+Drop support for Node 16 and 18, update minimum Node version to 20 (#11690, #12171)
+Remove installGlobals() as this should no longer be necessary
+Add exports field to all packages (#11675)
+No longer re-export APIs from react-router through different runtime/adapter packages (#11702)
+For Remix consumers migrating to React Router, the crypto global from the Web Crypto API is now required when using cookie and session APIs
+This means that the following APIs are provided from react-router rather than platform-specific packages: (#11837)
+createCookie
+createCookieSessionStorage
+createMemorySessionStorage
+createSessionStorage
+For consumers running older versions of Node, the installGlobals function from @remix-run/node has been updated to define globalThis.crypto, using Node's require('node:crypto').webcrypto implementation
+Since platform-specific packages no longer need to implement this API, the following low-level APIs have been removed:
+createCookieFactory
+createSessionStorageFactory
+createCookieSessionStorageFactory
+createMemorySessionStorageFactory
+Consolidate types previously duplicated across @remix-run/router, @remix-run/server-runtime, and @remix-run/react now that they all live in react-router (#12177)
+Examples: LoaderFunction, LoaderFunctionArgs, ActionFunction, ActionFunctionArgs, DataFunctionArgs, RouteManifest, LinksFunction, Route, EntryRoute
+The RouteManifest type used by the "remix" code is now slightly stricter because it is using the former @remix-run/router RouteManifest
+Record<string, Route> -> Record<string, Route | undefined>
+Removed AppData type in favor of inlining unknown in the few locations it was used
+Removed ServerRuntimeMeta* types in favor of the Meta* types they were duplicated from
+Migrate Remix v2 type generics to React Router (#12180)
+These generics are provided for Remix v2 migration purposes
+These generics and the APIs they exist on should be considered informally deprecated in favor of the new Route.* types
+Anyone migrating from React Router v6 should probably not leverage these new generics and should migrate straight to the Route.* types
+For React Router v6 users, these generics are new and should not impact your app, with one exception
+useFetcher previously had an optional generic (used primarily by Remix v2) that expected the data type
+This has been updated in v7 to expect the type of the function that generates the data (i.e., typeof loader/typeof action)
+Therefore, you should update your usages:
+❌ useFetcher<LoaderData>()
+✅ useFetcher<typeof loader>()
+Update cookie dependency to ^1.0.1 - please see the release notes for any breaking changes (#12172)
+@react-router/cloudflare - For Remix consumers migrating to React Router, all exports from @remix-run/cloudflare-pages are now provided for React Router consumers in the @react-router/cloudflare package. There is no longer a separate package for Cloudflare Pages. (#11801)
+@react-router/cloudflare - The @remix-run/cloudflare-workers package has been deprecated. Remix consumers migrating to React Router should use the @react-router/cloudflare package directly. For guidance on how to use @react-router/cloudflare within a Cloudflare Workers context, refer to the Cloudflare Workers template. (#11801)
+@react-router/dev - For Remix consumers migrating to React Router, the vitePlugin and cloudflareDevProxyVitePlugin exports have been renamed and moved. (#11904)
+@react-router/dev - For Remix consumers migrating to React Router who used the Vite plugin's buildEnd hook, the resolved reactRouterConfig object no longer contains a publicPath property since this belongs to Vite, not React Router (#11575)
+@react-router/dev - For Remix consumers migrating to React Router, the Vite plugin's manifest option has been removed (#11573)
+@react-router/dev - Update default isbot version to v5 and drop support for isbot@3 (#11770)
+If you have isbot@4 or isbot@5 in your package.json:
+You do not need to make any changes
+If you have isbot@3 in your package.json and you have your own entry.server.tsx file in your repo
+You do not need to make any changes
+You can upgrade to isbot@5 independent of the React Router v7 upgrade
+If you have isbot@3 in your package.json and you do not have your own entry.server.tsx file in your repo
+You are using the internal default entry provided by React Router v7 and you will need to upgrade to isbot@5 in your package.json
+@react-router/dev - For Remix consumers migrating to React Router, Vite manifests (i.e. .vite/manifest.json) are now written within each build subdirectory, e.g. build/client/.vite/manifest.json and build/server/.vite/manifest.json instead of build/.vite/client-manifest.json and build/.vite/server-manifest.json. This means that the build output is now much closer to what you'd expect from a typical Vite project. (#11573)
+Originally the Remix Vite plugin moved all Vite manifests to a root-level build/.vite directory to avoid accidentally serving them in production, particularly from the client build. This was later improved with additional logic that deleted these Vite manifest files at the end of the build process unless Vite's build.manifest had been enabled within the app's Vite config. This greatly reduced the risk of accidentally serving the Vite manifests in production since they're only present when explicitly asked for. As a result, we can now assume that consumers will know that they need to manage these additional files themselves, and React Router can safely generate a more standard Vite build output.
+Minor Changes
+react-router - Params, loader data, and action data as props for route component exports (#11961)
+react-router - Add route module type generation (#12019)
+react-router - Remove duplicate RouterProvider implementations (#11679)
+react-router - Stabilize unstable_dataStrategy (#11969)
+react-router - Stabilize unstable_patchRoutesOnNavigation (#11970)
+react-router - Add prefetching support to Link/NavLink when using Remix SSR (#11402)
+react-router - Enhance ScrollRestoration so it can restore properly on an SSR'd document load (#11401)
+@react-router/dev - Add support for the prerender config in the React Router vite plugin, to support existing SSG use-cases (#11539)
+@react-router/dev - Remove internal entry.server.spa.tsx implementation which was not compatible with the Single Fetch async hydration approach (#11681)
+@react-router/serve: Update express.static configurations to support new prerender API (#11547)
+Assets in the build/client/assets folder are served as before, with a 1-year immutable Cache-Control header
+Static files outside of assets, such as pre-rendered .html and .data files are not served with a specific Cache-Control header
+.data files are served with Content-Type: text/x-turbo
+For some reason, when adding this via express.static, it seems to also add a Cache-Control: public, max-age=0 to .data files
+Patch Changes
+Replace substr with substring (#12080)
+react-router - Fix redirects returned from loaders/actions using data() (#12021)
+@react-router/dev - Enable prerendering for resource routes (#12200)
+@react-router/dev - resolve config directory relative to flat output file structure (#12187)
+Changes by Package
+Full Changelog: v6.28.0...v7.0.0
+
+v6.28.1
+Date: 2024-12-20
+
+Patch Changes
+Allow users to opt out of v7 deprecation warnings by setting flags to false (#12441)
+Full Changelog: v6.28.0...v6.28.1
+
+v6.28.0
+Date: 2024-11-06
+
+What's Changed
+In preparation for v7 we've added deprecation warnings for any future flags that you have not yet opted into. Please use the flags to better prepare for eventually upgrading to v7.
+Minor Changes
+Log deprecation warnings for v7 flags (#11750)
+Add deprecation warnings to json/defer in favor of returning raw objects
+These methods will be removed in React Router v7
+Patch Changes
+Update JSDoc URLs for new website structure (add /v6/ segment) (#12141)
+Full Changelog: v6.27.0...v6.28.0
+
+v6.27.0
+Date: 2024-10-11
+
+What's Changed
+Stabilized APIs
+This release stabilizes a handful of "unstable" APIs in preparation for the pending React Router v7 release (see these posts for more info):
+
+unstable_dataStrategy → dataStrategy (createBrowserRouter and friends) (Docs)
+unstable_patchRoutesOnNavigation → patchRoutesOnNavigation (createBrowserRouter and friends) (Docs)
+unstable_flushSync → flushSync (useSubmit, fetcher.load, fetcher.submit) (Docs)
+unstable_viewTransition → viewTransition (<Link>, <Form>, useNavigate, useSubmit) (Docs)
+Minor Changes
+Stabilize the unstable_flushSync option for navigations and fetchers (#11989)
+Stabilize the unstable_viewTransition option for navigations and the corresponding unstable_useViewTransitionState hook (#11989)
+Stabilize unstable_dataStrategy (#11974)
+Stabilize unstable_patchRoutesOnNavigation (#11973)
+Add new PatchRoutesOnNavigationFunctionArgs type for convenience (#11967)
+Patch Changes
+Fix bug when submitting to the current contextual route (parent route with an index child) when an ?index param already exists from a prior submission (#12003)
+Fix useFormAction bug - when removing ?index param it would not keep other non-Remix index params (#12003)
+Fix bug with fetchers not persisting preventScrollReset through redirects during concurrent fetches (#11999)
+Avoid unnecessary console.error on fetcher abort due to back-to-back revalidation calls (#12050)
+Fix bugs with partialHydration when hydrating with errors (#12070)
+Remove internal cache to fix issues with interrupted patchRoutesOnNavigation calls (#12055)
+⚠️ This may be a breaking change if you were relying on this behavior in the unstable_ API
+We used to cache in-progress calls to patchRoutesOnNavigation internally so that multiple navigations with the same start/end would only execute the function once and use the same promise
+However, this approach was at odds with patch short circuiting if a navigation was interrupted (and the request.signal aborted) since the first invocation's patch would no-op
+This cache also made some assumptions as to what a valid cache key might be - and is oblivious to any other application-state changes that may have occurred
+So, the cache has been removed because in most cases, repeated calls to something like import() for async routes will already be cached automatically - and if not it's easy enough for users to implement this cache in userland
+Remove internal discoveredRoutes FIFO queue from unstable_patchRoutesOnNavigation (#11977)
+⚠️ This may be a breaking change if you were relying on this behavior in the unstable_ API
+This was originally implemented as an optimization but it proved to be a bit too limiting
+If you need this optimization you can implement your own cache inside patchRoutesOnNavigation
+Fix types for RouteObject within PatchRoutesOnNavigationFunction's patch method so it doesn't expect agnostic route objects passed to patch (#11967)
+Expose errors thrown from patchRoutesOnNavigation directly to useRouteError instead of wrapping them in a 400 ErrorResponse instance (#12111)
+Full Changelog: v6.26.2...v6.27.0
+
+v6.26.2
+Date: 2024-09-09
+
+Patch Changes
+Update the unstable_dataStrategy API to allow for more advanced implementations (#11943)
+⚠️ If you have already adopted unstable_dataStrategy, please review carefully as this includes breaking changes to this API
+Rename unstable_HandlerResult to unstable_DataStrategyResult
+Change the return signature of unstable_dataStrategy from a parallel array of unstable_DataStrategyResult[] (parallel to matches) to a key/value object of routeId => unstable_DataStrategyResult
+This allows more advanced control over revalidation behavior because you can opt-into or out-of revalidating data that may not have been revalidated by default (via match.shouldLoad)
+You should now return/throw a result from your handlerOverride instead of returning a DataStrategyResult
+The return value (or thrown error) from your handlerOverride will be wrapped up into a DataStrategyResult and returned fromm match.resolve
+Therefore, if you are aggregating the results of match.resolve() into a final results object you should not need to think about the DataStrategyResult type
+If you are manually filling your results object from within your handlerOverride, then you will need to assign a DataStrategyResult as the value so React Router knows if it's a successful execution or an error (see examples in the documentation for details)
+Added a new fetcherKey parameter to unstable_dataStrategy to allow differentiation from navigational and fetcher calls
+Preserve opted-in view transitions through redirects (#11925)
+Preserve pending view transitions through a router revalidation call (#11917)
+Fix blocker usage when blocker.proceed is called quickly/synchronously (#11930)
+Full Changelog: v6.26.1...v6.26.2
+
+v6.26.1
+Date: 2024-08-15
+
+Patch Changes
+Rename unstable_patchRoutesOnMiss to unstable_patchRoutesOnNavigation to match new behavior (#11888)
+Update unstable_patchRoutesOnNavigation logic so that we call the method when we match routes with dynamic param or splat segments in case there exists a higher-scoring static route that we've not yet discovered (#11883)
+We also now leverage an internal FIFO queue of previous paths we've already called unstable_patchRoutesOnNavigation against so that we don't re-call on subsequent navigations to the same path
+Full Changelog: v6.26.0...v6.26.1
+
+v6.26.0
+Date: 2024-08-01
+
+Minor Changes
+Add a new replace(url, init?) alternative to redirect(url, init?) that performs a history.replaceState instead of a history.pushState on client-side navigation redirects (#11811)
+Add a new unstable_data() API for usage with Remix Single Fetch (#11836)
+This API is not intended for direct usage in React Router SPA applications
+It is primarily intended for usage with createStaticHandler.query() to allow loaders/actions to return arbitrary data along with custom status/headers without forcing the serialization of data into a Response instance
+This allows for more advanced serialization tactics via unstable_dataStrategy such as serializing via turbo-stream in Remix Single Fetch
+⚠️ This removes the status field from HandlerResult
+If you need to return a specific status from unstable_dataStrategy you should instead do so via unstable_data()
+Patch Changes
+Fix internal cleanup of interrupted fetchers to avoid invalid revalidations on navigations (#11839)
+Fix initial hydration behavior when using future.v7_partialHydration along with unstable_patchRoutesOnMiss (#11838)
+During initial hydration, router.state.matches will now include any partial matches so that we can render ancestor HydrateFallback components
+Full Changelog: v6.25.1...v6.26.0
+
+v6.25.1
+Date: 2024-07-17
+
+Patch Changes
+Memoize some RouterProvider internals to reduce unnecessary re-renders (#11803)
+Full Changelog: v6.25.0...v6.25.1
+
+v6.25.0
+Date: 2024-07-16
+
+What's Changed
+Stabilized v7_skipActionErrorRevalidation
+This release stabilizes the future.unstable_skipActionErrorRevalidation flag into future.v7_skipActionErrorRevalidation in preparation for the upcoming React Router v7 release.
+
+When this flag is enabled, actions that return/throw a 4xx/5xx Response will not trigger a revalidation by default
+This also stabilizes shouldRevalidate's unstable_actionStatus parameter to actionStatus
+Minor Changes
+Stabilize future.unstable_skipActionErrorRevalidation as future.v7_skipActionErrorRevalidation (#11769)
+Patch Changes
+Fix regression and properly decode paths inside useMatch so matches/params reflect decoded params (#11789)
+Fix bubbling of errors thrown from unstable_patchRoutesOnMiss (#11786)
+Fix hydration in SSR apps using unstable_patchRoutesOnMiss that matched a splat route on the server (#11790)
+Full Changelog: v6.24.1...v6.25.0
+
+v6.24.1
+Date: 2024-07-03
+
+Patch Changes
+Remove polyfill.io reference from warning message because the domain was sold and has since been determined to serve malware (#11741)
+See https://sansec.io/research/polyfill-supply-chain-attack
+Export NavLinkRenderProps type for easier typing of custom NavLink callback (#11553)
+When using future.v7_relativeSplatPath, properly resolve relative paths in splat routes that are children of pathless routes (#11633)
+Fog of War (unstable): Trigger a new router.routes identity/reflow during route patching (#11740)
+Fog of War (unstable): Fix initial matching when a splat route matches (#11759)
+Full Changelog: v6.24.0...v6.24.1
+
+v6.24.0
+Date: 2024-06-24
+
+What's Changed
+Lazy Route Discovery (a.k.a. "Fog of War")
+We're really excited to release our new API for "Lazy Route Discovery" in v6.24.0! For some background information, please check out the original RFC. The tl;dr; is that ever since we introduced the Data APIs in v6.4 via <RouterProvider>, we've been a little bummed that one of the tradeoffs was the lack of a compelling code-splitting story mirroring what we had in the <BrowserRouter>/<Routes> apps. We took a baby-step towards improving that story with route.lazy in v6.9.0, but with v6.24.0 we've gone the rest of the way.
+
+With "Fog of War", you can now load portions of the route tree lazily via the new unstable_patchRoutesOnMiss option passed to createBrowserRouter (and it's memory/hash counterparts). This gives you a way to hook into spots where React Router is unable to match a given path and patch new routes into the route tree during the navigation (or fetcher call).
+
+Here's a very small example, but please refer to the documentation for more information and use cases:
+
+const router = createBrowserRouter(
+  [
+    {
+      id: "root",
+      path: "/",
+      Component: RootComponent,
+    },
+  ],
+  {
+    async unstable_patchRoutesOnMiss({ path, patch }) {
+      if (path === "/a") {
+        // Load the `a` route (`{ path: 'a', Component: A }`)
+        let route = await getARoute();
+        // Patch the `a` route in as a new child of the `root` route
+        patch("root", [route]);
+      }
+    },
+  }
+);
+Minor Changes
+Add support for Lazy Route Discovery (a.k.a. "Fog of War") (#11626)
+Patch Changes
+Fix fetcher.submit types - remove incorrect navigate/fetcherKey/unstable_viewTransition options because they are only relevant for useSubmit (#11631)
+Allow falsy location.state values passed to <StaticRouter> (#11495)
+Full Changelog: v6.23.1...v6.24.0
+
+v6.23.1
+Date: 2024-05-10
+
+Patch Changes
+Allow undefined to be resolved through <Await> (#11513)
+Add defensive document check when checking for document.startViewTransition availability (#11544)
+Change the react-router-dom/server import back to react-router-dom instead of index.ts (#11514)
+@remix-run/router - Support unstable_dataStrategy on staticHandler.queryRoute (#11515)
+Full Changelog: v6.23.0...v6.23.1
+
+v6.23.0
+Date: 2024-04-23
+
+What's Changed
+Data Strategy (unstable)
+The new unstable_dataStrategy API is a low-level API designed for advanced use-cases where you need to take control over the data strategy for your loader/action functions. The default implementation is today's behavior, to fetch all loaders in parallel, but this option allows users to implement more advanced data flows including Remix "Single Fetch", user-land middleware/context APIs, automatic loader caching, and more. Please see the docs for more information.
+
+Note: This is a low-level API intended for advanced use-cases. This overrides React Router's internal handling of loader/action execution, and if done incorrectly will break your app code. Please use with caution and perform the appropriate testing.
+
+Skip Action Error Revalidation (unstable)
+Currently, all active loader's revalidate after any action submission, regardless of the action result. However, in the majority of cases a 4xx/5xx response from an action means that no data was actually changed and the revalidation is unnecessary. We've introduced a new future.unstable_skipActionErrorRevalidation flag that changes the behavior here, and we plan to make this the default in future version of React Router.
+
+With this flag enabled, action's that return/throw a 4xx/5xx response status will no longer automatically revalidate. If you need to revalidate after a 4xx/5xx result with this flag enabled, you can still do that via returning true from shouldRevalidate - which now also receives a new unstable_actionStatus argument alongside actionResult so you can make decision based on the status of the action response without having to encode it into the action data.
+
+Minor Changes
+Add a new unstable_dataStrategy configuration option (#11098, #11377)
+@remix-run/router - Add a new future.unstable_skipActionRevalidation future flag (#11098)
+@remix-run/router - SSR: Added a new skipLoaderErrorBubbling options to the staticHandler.query method to disable error bubbling by the static handler for use in Remix's Single Fetch implementation (#11098, (#11377))
+Full Changelog: v6.22.3...v6.23.0
+</CHANGELOG_RR>
+<DOCUMENTATION>
+[2024-12-27 18:31:48]
+React Router Home
+​
+ Summarize
+​
+React Router is a multi-strategy router for React bridging the gap from React 18 to React 19. You can use it maximally as a React framework or minimally as a library with your own architecture.
+
+Getting Started - Framework
+Getting Started - Library
+If you are caught up on future flags, upgrading from React Router v6 or Remix is generally non-breaking:
+
+Upgrade from v6
+Upgrade from Remix
+React Router as a Library
+
+Like previous versions, React Router can still be used as a simple, declarative routing library. Its only job will be matching the URL to a set of components, providing access to URL data, and navigating around the app.
+
+This strategy is popular for "Single Page Apps" that have their own frontend infrastructure and v6 apps looking for a stress free upgrade.
+
+It's particularly good at offline + sync architectures where pending states are rare and users have long running sessions. Framework features like pending states, code splitting, server rendering, SEO, and initial page load times can be traded out for instant local-first interactions.
+
+ReactDOM.createRoot(root).render(
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="dashboard" element={<Dashboard />}>
+        <Route index element={<RecentActivity />} />
+        <Route path="project/:id" element={<Project />} />
+      </Route>
+    </Routes>
+  </BrowserRouter>
+);
+Get Started with React Router as a library.
+
+React Router as a framework
+
+React Router can be used maximally as your React framework. In this setup, you'll use the React Router CLI and Vite bundler plugin for a full-stack development and deployment architecture. This enables React Router to provide a large set of features most web projects will want, including:
+
+Vite bundler and dev server integration
+hot module replacement
+code splitting
+route conventions with type safety
+file system or config-based routing
+data loading with type safety
+actions with type safety
+automatic revalidation of page data after actions
+SSR, SPA, and static rendering strategies
+APIs for pending states and optimistic UI
+deployment adapters
+Routes are configured with routes.ts which enables React Router to do a lot for you. For example, it will automatically code-split each route, provide type safety for the parameters and data, and automatically load the data with access to pending states as the user navigates to it.
+
+import {
+  type RouteConfig,
+  route,
+  index,
+  layout,
+  prefix,
+} from "@react-router/dev/routes";
+
+export default [
+  index("./home.tsx"),
+  route("about", "./about.tsx"),
+
+  layout("./auth/layout.tsx", [
+    route("login", "./auth/login.tsx"),
+    route("register", "./auth/register.tsx"),
+  ]),
+
+  ...prefix("concerts", [
+    index("./concerts/home.tsx"),
+    route(":city", "./concerts/city.tsx"),
+    route(":city/:id", "./concerts/show.tsx")
+    route("trending", "./concerts/trending.tsx"),
+  ]),
+] satisfies RouteConfig;
+You'll have access to the Route Module API, which most of the other features are built on.
+
+Loaders provide data to route components:
+
+// loaders provide data to components
+export async function loader({ params }: Route.LoaderArgs) {
+  const [show, isLiked] = await Promise.all([
+    fakeDb.find("show", params.id),
+    fakeIsLiked(params.city),
+  ]);
+  return { show, isLiked };
+}
+Components render at their configured URLs from routes.ts with the loader data passed in as a prop:
+
+export default function Show({
+  loaderData,
+}: Route.ComponentProps) {
+  const { show, isLiked } = loaderData;
+  return (
+    <div>
+      <h1>{show.name}</h1>
+      <p>{show.description}</p>
+
+      <form method="post">
+        <button
+          type="submit"
+          name="liked"
+          value={isLiked ? 0 : 1}
+        >
+          {isLiked ? "Remove" : "Save"}
+        </button>
+      </form>
+    </div>
+  );
+}
+Actions can update data and trigger a revalidation of all data on the page so your UI stays up to date automatically:
+
+export async function action({
+  request,
+  params,
+}: Route.LoaderArgs) {
+  const formData = await request.formData();
+  await fakeSetLikedShow(formData.get("liked"));
+  return { ok: true };
+}
+Route modules also provide conventions for SEO, asset loading, error boundaries, and more.
+
+Get Started with React Router as a framework.
+
+[2024-12-27 18:35:28]
+Installation
+
+React Router v7 requires the following minimum versions:
+
+node@20
+react@18
+react-dom@18
+Most projects start with a template. Let's use a basic template maintained by React Router:
+
+npx create-react-router@latest my-react-router-app
+Copy code to clipboard
+Now change into the new directory and start the app
+
+cd my-react-router-app
+npm i
+npm run dev
+Copy code to clipboard
+You can now open your browser to http://localhost:5173
+
+You can view the template on GitHub to see how to manually set up your project.
+
+We also have a number of ready to deploy templates available for you to get started with:
+
+npx create-react-router@latest --template remix-run/react-router-templates/<template-name>
+Copy code to clipboard
+
+
+[2024-12-27 18:35:39]
+Routing
+​
+ Summarize
+​
+Configuring Routes
+
+Routes are configured in app/routes.ts. Each route has two required parts: a URL pattern to match the URL, and a file path to the route module that defines its behavior.
+
+import {
+  type RouteConfig,
+  route,
+} from "@react-router/dev/routes";
+
+export default [
+  route("some/path", "./some/file.tsx"),
+  // pattern ^           ^ module file
+] satisfies RouteConfig;
+Here is a larger sample route config:
+
+import {
+  type RouteConfig,
+  route,
+  index,
+  layout,
+  prefix,
+} from "@react-router/dev/routes";
+
+export default [
+  index("./home.tsx"),
+  route("about", "./about.tsx"),
+
+  layout("./auth/layout.tsx", [
+    route("login", "./auth/login.tsx"),
+    route("register", "./auth/register.tsx"),
+  ]),
+
+  ...prefix("concerts", [
+    index("./concerts/home.tsx"),
+    route(":city", "./concerts/city.tsx"),
+    route("trending", "./concerts/trending.tsx"),
+  ]),
+] satisfies RouteConfig;
+If you prefer to define your routes via file naming conventions rather than configuration, the @react-router/fs-routes package provides a file system routing convention.
+
+Route Modules
+
+The files referenced in routes.ts define each route's behavior:
+
+route("teams/:teamId", "./team.tsx"),
+//           route module ^^^^^^^^
+Here's a sample route module:
+
+// provides type safety/inference
+import type { Route } from "./+types/team";
+
+// provides `loaderData` to the component
+export async function loader({ params }: Route.LoaderArgs) {
+  let team = await fetchTeam(params.teamId);
+  return { name: team.name };
+}
+
+// renders after the loader is done
+export default function Component({
+  loaderData,
+}: Route.ComponentProps) {
+  return <h1>{loaderData.name}</h1>;
+}
+Route modules have more features like actions, headers, and error boundaries, but they will be covered in the next guide: Route Modules
+
+Nested Routes
+
+Routes can be nested inside parent routes.
+
+import {
+  type RouteConfig,
+  route,
+  index,
+} from "@react-router/dev/routes";
+
+export default [
+  // parent route
+  route("dashboard", "./dashboard.tsx", [
+    // child routes
+    index("./home.tsx"),
+    route("settings", "./settings.tsx"),
+  ]),
+] satisfies RouteConfig;
+The path of the parent is automatically included in the child, so this config creates both "/dashboard" and "/dashboard/settings" URLs.
+
+Child routes are rendered through the <Outlet/> in the parent route.
+
+import { Outlet } from "react-router";
+
+export default function Dashboard() {
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      {/* will either be home.tsx or settings.tsx */}
+      <Outlet />
+    </div>
+  );
+}
+Root Route
+
+Every route in routes.ts is nested inside the special app/root.tsx module.
+
+Layout Routes
+
+Using layout, layout routes create new nesting for their children, but they don't add any segments to the URL. It's like the root route but they can be added at any level.
+
+import {
+  type RouteConfig,
+  route,
+  layout,
+  index,
+  prefix,
+} from "@react-router/dev/routes";
+
+export default [
+  layout("./marketing/layout.tsx", [
+    index("./marketing/home.tsx"),
+    route("contact", "./marketing/contact.tsx"),
+  ]),
+  ...prefix("projects", [
+    index("./projects/home.tsx"),
+    layout("./projects/project-layout.tsx", [
+      route(":pid", "./projects/project.tsx"),
+      route(":pid/edit", "./projects/edit-project.tsx"),
+    ]),
+  ]),
+] satisfies RouteConfig;
+To see projects/home.tsx appear in the layout, we'll need an outlet:
+
+import { Outlet } from "react-router";
+
+export default function ProjectLayout() {
+  return (
+    <div>
+      <aside>Example sidebar</aside>
+      <main>
+        <Outlet />
+      </main>
+    </div>
+  );
+}
+Index Routes
+
+Index routes render into their parent's Outlet at their parent's URL (like a default child route).
+
+import {
+  type RouteConfig,
+  route,
+  index,
+} from "@react-router/dev/routes";
+
+export default [
+  // renders into the root.tsx Outlet at /
+  index("./home.tsx"),
+  route("dashboard", "./dashboard.tsx", [
+    // renders into the dashboard.tsx Outlet at /dashboard
+    index("./dashboard-home.tsx"),
+    route("settings", "./dashboard-settings.tsx"),
+  ]),
+] satisfies RouteConfig;
+Note that index routes can't have children.
+
+Route Prefixes
+
+Using prefix, you can add a path prefix to a set of routes without needing to introduce a parent route file.
+
+import {
+  type RouteConfig,
+  route,
+  layout,
+  index,
+  prefix,
+} from "@react-router/dev/routes";
+
+export default [
+  layout("./marketing/layout.tsx", [
+    index("./marketing/home.tsx"),
+    route("contact", "./marketing/contact.tsx"),
+  ]),
+  ...prefix("projects", [
+    index("./projects/home.tsx"),
+    layout("./projects/project-layout.tsx", [
+      route(":pid", "./projects/project.tsx"),
+      route(":pid/edit", "./projects/edit-project.tsx"),
+    ]),
+  ]),
+] satisfies RouteConfig;
+Dynamic Segments
+
+If a path segment starts with : then it becomes a "dynamic segment". When the route matches the URL, the dynamic segment will be parsed from the URL and provided as params to other router APIs.
+
+route("teams/:teamId", "./team.tsx"),
+import type { Route } from "./+types/team";
+
+export async function loader({ params }: Route.LoaderArgs) {
+  //                           ^? { teamId: string }
+}
+
+export default function Component({
+  params,
+}: Route.ComponentProps) {
+  params.teamId;
+  //        ^ string
+}
+You can have multiple dynamic segments in one route path:
+
+route("c/:categoryId/p/:productId", "./product.tsx"),
+import type { Route } from "./+types/product";
+
+async function loader({ params }: LoaderArgs) {
+  //                    ^? { categoryId: string; productId: string }
+}
+Optional Segments
+
+You can make a route segment optional by adding a ? to the end of the segment.
+
+route(":lang?/categories", "./categories.tsx"),
+You can have optional static segments, too:
+
+route("users/:userId/edit?", "./user.tsx");
+Splats
+
+Also known as "catchall" and "star" segments. If a route path pattern ends with /* then it will match any characters following the /, including other / characters.
+
+route("files/*", "./files.tsx"),
+export async function loader({ params }: Route.LoaderArgs) {
+  // params["*"] will contain the remaining URL after files/
+}
+You can destructure the *, you just have to assign it a new name. A common name is splat:
+
+const { "*": splat } = params;
+Component Routes
+
+You can also use components that match the URL to elements anywhere in the component tree:
+
+import { Routes, Route } from "react-router";
+
+function Wizard() {
+  return (
+    <div>
+      <h1>Some Wizard with Steps</h1>
+      <Routes>
+        <Route index element={<StepOne />} />
+        <Route path="step-2" element={<StepTwo />} />
+        <Route path="step-3" element={<StepThree />}>
+      </Routes>
+    </div>
+  );
+}
+Note that these routes do not participate in data loading, actions, code splitting, or any other route module features, so their use cases are more limited than those of the route module.
+
+Next: Route Module
+
+[2024-12-27 18:35:52]
+Route Module
+​
+ Summarize
+​
+The files referenced in routes.ts are called Route Modules.
+
+route("teams/:teamId", "./team.tsx"),
+//           route module ^^^^^^^^
+Route modules are the foundation of React Router's framework features, they define:
+
+automatic code-splitting
+data loading
+actions
+revalidation
+error boundaries
+and more
+This guide is a quick overview of every route module feature. The rest of the getting started guides will cover these features in more detail.
+
+Component (default)
+
+Defines the component that will render when the route matches.
+
+export default function MyRouteComponent() {
+  return (
+    <div>
+      <h1>Look ma!</h1>
+      <p>
+        I'm still using React Router after like 10 years.
+      </p>
+    </div>
+  );
+}
+loader
+
+Route loaders provide data to route components before they are rendered. They are only called on the server when server rendering or during the build with pre-rendering.
+
+export async function loader() {
+  return { message: "Hello, world!" };
+}
+
+export default function MyRoute({ loaderData }) {
+  return <h1>{loaderData.message}</h1>;
+}
+See also:
+
+loader params
+clientLoader
+
+Called only in the browser, route client loaders provide data to route components in addition to, or in place of, route loaders.
+
+export async function clientLoader({ serverLoader }) {
+  // call the server loader
+  const serverData = await serverLoader();
+  // And/or fetch data on the client
+  const data = getDataFromClient();
+  // Return the data to expose through useLoaderData()
+  return data;
+}
+Client loaders can participate in initial page load hydration of server rendered pages by setting the hydrate property on the function:
+
+export async function clientLoader() {
+  // ...
+}
+clientLoader.hydrate = true as const;
+By using as const, TypeScript will infer that the type for clientLoader.hydrate is true instead of boolean. That way, React Router can derive types for loaderData based on the value of clientLoader.hydrate.
+
+See also:
+
+clientLoader params
+action
+
+Route actions allow server-side data mutations with automatic revalidation of all loader data on the page when called from <Form>, useFetcher, and useSubmit.
+
+// route("/list", "./list.tsx")
+import { Form } from "react-router";
+import { TodoList } from "~/components/TodoList";
+
+// this data will be loaded after the action completes...
+export async function loader() {
+  const items = await fakeDb.getItems();
+  return { items };
+}
+
+// ...so that the list here is updated automatically
+export default function Items({ loaderData }) {
+  return (
+    <div>
+      <List items={loaderData.items} />
+      <Form method="post" navigate={false} action="/list">
+        <input type="text" name="title" />
+        <button type="submit">Create Todo</button>
+      </Form>
+    </div>
+  );
+}
+
+export async function action({ request }) {
+  const data = await request.formData();
+  const todo = await fakeDb.addItem({
+    title: data.get("title"),
+  });
+  return { ok: true };
+}
+clientAction
+
+Like route actions but only called in the browser.
+
+export async function clientAction({ serverAction }) {
+  fakeInvalidateClientSideCache();
+  // can still call the server action if needed
+  const data = await serverAction();
+  return data;
+}
+See also:
+
+clientAction params
+ErrorBoundary
+
+When other route module APIs throw, the route module ErrorBoundary will render instead of the route component.
+
+import {
+  isRouteErrorResponse,
+  useRouteError,
+} from "react-router";
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        <h1>
+          {error.status} {error.statusText}
+        </h1>
+        <p>{error.data}</p>
+      </div>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <div>
+        <h1>Error</h1>
+        <p>{error.message}</p>
+        <p>The stack trace is:</p>
+        <pre>{error.stack}</pre>
+      </div>
+    );
+  } else {
+    return <h1>Unknown Error</h1>;
+  }
+}
+HydrateFallback
+
+On initial page load, the route component renders only after the client loader is finished. If exported, a HydrateFallback can render immediately in place of the route component.
+
+export async function clientLoader() {
+  const data = await fakeLoadLocalGameData();
+  return data;
+}
+
+export function HydrateFallback() {
+  return <p>Loading Game...</p>;
+}
+
+export default function Component({ loaderData }) {
+  return <Game data={loaderData} />;
+}
+headers
+
+Route headers define HTTP headers to be sent with the response when server rendering.
+
+export function headers() {
+  return {
+    "X-Stretchy-Pants": "its for fun",
+    "Cache-Control": "max-age=300, s-maxage=3600",
+  };
+}
+handle
+
+Route handle allows apps to add anything to a route match in useMatches to create abstractions (like breadcrumbs, etc.).
+
+export const handle = {
+  its: "all yours",
+};
+links
+
+Route links define <link> elements to be rendered in the document <head>.
+
+export function links() {
+  return [
+    {
+      rel: "icon",
+      href: "/favicon.png",
+      type: "image/png",
+    },
+    {
+      rel: "stylesheet",
+      href: "https://example.com/some/styles.css",
+    },
+    {
+      rel: "preload",
+      href: "/images/banner.jpg",
+      as: "image",
+    },
+  ];
+}
+All routes links will be aggregated and rendered through the <Links /> component, usually rendered in your app root:
+
+import { Links } from "react-router";
+
+export default function Root() {
+  return (
+    <html>
+      <head>
+        <Links />
+      </head>
+
+      <body />
+    </html>
+  );
+}
+meta
+
+Route meta defines meta tags to be rendered in the <head> of the document.
+
+export function meta() {
+  return [
+    { title: "Very cool app" },
+    {
+      property: "og:title",
+      content: "Very cool app",
+    },
+    {
+      name: "description",
+      content: "This app is the best",
+    },
+  ];
+}
+All routes' meta will be aggregated and rendered through the <Meta /> component, usually rendered in your app root:
+
+import { Meta } from "react-router";
+
+export default function Root() {
+  return (
+    <html>
+      <head>
+        <Meta />
+      </head>
+
+      <body />
+    </html>
+  );
+}
+See also
+
+meta params
+shouldRevalidate
+
+By default, all routes are revalidated after actions. This function allows a route to opt-out of revalidation for actions that don't affect its data.
+
+import type { ShouldRevalidateFunctionArgs } from "react-router";
+
+export function shouldRevalidate(
+  arg: ShouldRevalidateFunctionArgs
+) {
+  return true;
+}
+Next: Rendering Strategies
+
+[2024-12-27 18:36:00]
+Rendering Strategies
+​
+ Summarize
+​
+There are three rendering strategies in React Router:
+
+Client Side Rendering
+Server Side Rendering
+Static Pre-rendering
+Client Side Rendering
+
+Routes are always client side rendered as the user navigates around the app. If you're looking to build a Single Page App, disable server rendering:
+
+import type { Config } from "@react-router/dev/config";
+
+export default {
+  ssr: false,
+} satisfies Config;
+Server Side Rendering
+
+import type { Config } from "@react-router/dev/config";
+
+export default {
+  ssr: true,
+} satisfies Config;
+Server side rendering requires a deployment that supports it. Though it's a global setting, individual routes can still be statically pre-rendered. Routes can also use client data loading with clientLoader to avoid server rendering/fetching for their portion of the UI.
+
+Static Pre-rendering
+
+import type { Config } from "@react-router/dev/config";
+
+export default {
+  // return a list of URLs to prerender at build time
+  async prerender() {
+    return ["/", "/about", "/contact"];
+  },
+} satisfies Config;
+Pre-rendering is a build-time operation that generates static HTML and client navigation data payloads for a list of URLs. This is useful for SEO and performance, especially for deployments without server rendering. When pre-rendering, route module loaders are used to fetch data at build time.
+
+Next: Data Loading
+
+[2024-12-27 18:36:12]
+Data Loading
+​
+ Summarize
+​
+Data is provided to the route component from loader and clientLoader.
+
+Loader data is automatically serialized from loaders and deserialized in components. In addition to primitive values like strings and numbers, loaders can return promises, maps, sets, dates and more.
+
+Client Data Loading
+
+clientLoader is used to fetch data on the client. This is useful for pages or full projects that you'd prefer to fetch data from the browser only.
+
+// route("products/:pid", "./product.tsx");
+import type { Route } from "./+types/product";
+
+export async function clientLoader({
+  params,
+}: Route.ClientLoaderArgs) {
+  const res = await fetch(`/api/products/${params.pid}`);
+  const product = await res.json();
+  return product;
+}
+
+export default function Product({
+  loaderData,
+}: Route.ComponentProps) {
+  const { name, description } = loaderData;
+  return (
+    <div>
+      <h1>{name}</h1>
+      <p>{description}</p>
+    </div>
+  );
+}
+Server Data Loading
+
+When server rendering, loader is used for both initial page loads and client navigations. Client navigations call the loader through an automatic fetch by React Router from the browser to your server.
+
+// route("products/:pid", "./product.tsx");
+import type { Route } from "./+types/product";
+import { fakeDb } from "../db";
+
+export async function loader({ params }: Route.LoaderArgs) {
+  const product = await fakeDb.getProduct(params.pid);
+  return product;
+}
+
+export default function Product({
+  loaderData,
+}: Route.ComponentProps) {
+  const { name, description } = loaderData;
+  return (
+    <div>
+      <h1>{name}</h1>
+      <p>{description}</p>
+    </div>
+  );
+}
+Note that the loader function is removed from client bundles so you can use server only APIs without worrying about them being included in the browser.
+
+Static Data Loading
+
+When pre-rendering, loaders are used to fetch data during the production build.
+
+// route("products/:pid", "./product.tsx");
+import type { Route } from "./+types/product";
+
+export async function loader({ params }: Route.LoaderArgs) {
+  let product = await getProductFromCSVFile(params.pid);
+  return product;
+}
+
+export default function Product({
+  loaderData,
+}: Route.ComponentProps) {
+  const { name, description } = loaderData;
+  return (
+    <div>
+      <h1>{name}</h1>
+      <p>{description}</p>
+    </div>
+  );
+}
+The URLs to pre-render are specified in react-router.config.ts:
+
+import type { Config } from "@react-router/dev/config";
+
+export default {
+  async prerender() {
+    let products = await readProductsFromCSVFile();
+    return products.map(
+      (product) => `/products/${product.id}`
+    );
+  },
+} satisfies Config;
+Note that when server rendering, any URLs that aren't pre-rendered will be server rendered as usual, allowing you to pre-render some data at a single route while still server rendering the rest.
+
+Using Both Loaders
+
+loader and clientLoader can be used together. The loader will be used on the server for initial SSR (or pre-rendering) and the clientLoader will be used on subsequent client-side navigations.
+
+// route("products/:pid", "./product.tsx");
+import type { Route } from "./+types/product";
+import { fakeDb } from "../db";
+
+export async function loader({ params }: Route.LoaderArgs) {
+  return fakeDb.getProduct(params.pid);
+}
+
+export async function clientLoader({
+  params,
+}: Route.ClientLoader) {
+  const res = await fetch(`/api/products/${params.pid}`);
+  return res.json();
+}
+
+export default function Product({
+  loaderData,
+}: Route.ComponentProps) {
+  const { name, description } = loaderData;
+
+  return (
+    <div>
+      <h1>{name}</h1>
+      <p>{description}</p>
+    </div>
+  );
+}
+Next: Actions
+
+See also:
+
+Streaming with Suspense
+
+[2024-12-27 18:36:20]
+Streaming with Suspense
+​
+ Summarize
+​
+Streaming with React Suspense allows apps to speed up initial renders by deferring non-critical data and unblocking UI rendering.
+
+React Router supports React Suspense by returning promises from loaders and actions.
+
+1. Return a promise from loader
+
+React Router awaits route loaders before rendering route components. To unblock the loader for non-critical data, return the promise instead of awaiting it in the loader.
+
+import type { Route } from "./+types/my-route";
+
+export async function loader({}: Route.LoaderArgs) {
+  // note this is NOT awaited
+  let nonCriticalData = new Promise((res) =>
+    setTimeout(() => res("non-critical"), 5000)
+  );
+
+  let criticalData = await new Promise((res) =>
+    setTimeout(() => res("critical"), 300)
+  );
+
+  return { nonCriticalData, criticalData };
+}
+2. Render the fallback and resolved UI
+
+The promise will be available on loaderData, <Await> will await the promise and trigger <Suspense> to render the fallback UI.
+
+import * as React from "react";
+import { Await } from "react-router";
+
+// [previous code]
+
+export default function MyComponent({
+  loaderData,
+}: Route.ComponentProps) {
+  let { criticalData, nonCriticalData } = loaderData;
+
+  return (
+    <div>
+      <h1>Streaming example</h1>
+      <h2>Critical data value: {criticalData}</h2>
+
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <Await resolve={nonCriticalData}>
+          {(value) => <h3>Non critical value: {value}</h3>}
+        </Await>
+        <NonCriticalUI p={nonCriticalData} />
+      </React.Suspense>
+    </div>
+  );
+}
+With React 19
+
+If you're experimenting with React 19, you can use React.use instead of Await, but you'll need to create a new component and pass the promise down to trigger the suspense fallback.
+
+<React.Suspense fallback={<div>Loading...</div>}>
+  <NonCriticalUI p={nonCriticalData} />
+</React.Suspense>
+function NonCriticalUI({ p }: { p: Promise<string> }) {
+  let value = React.use(p);
+  return <h3>Non critical value {value}</h3>;
+}
+
+[2024-12-27 18:37:09]
+Navigating
+​
+ Summarize
+​
+Users navigate your application with <Link>, <NavLink>, <Form>, redirect, and useNavigate.
+
+This component is for navigation links that need to render active and pending states.
+
+import { NavLink } from "react-router";
+
+export function MyAppNav() {
+  return (
+    <nav>
+      <NavLink to="/" end>
+        Home
+      </NavLink>
+      <NavLink to="/trending" end>
+        Trending Concerts
+      </NavLink>
+      <NavLink to="/concerts">All Concerts</NavLink>
+      <NavLink to="/account">Account</NavLink>
+    </nav>
+  );
+}
+NavLink renders default class names for different states for easy styling with CSS:
+
+a.active {
+  color: red;
+}
+
+a.pending {
+  animate: pulse 1s infinite;
+}
+
+a.transitioning {
+  /* css transition is running */
+}
+It also has callback props on className, style, and children with the states for inline styling or conditional rendering:
+
+// className
+<NavLink
+  to="/messages"
+  className={({ isActive, isPending, isTransitioning }) =>
+    [
+      isPending ? "pending" : "",
+      isActive ? "active" : "",
+      isTransitioning ? "transitioning" : "",
+    ].join(" ")
+  }
+>
+  Messages
+</NavLink>
+// style
+<NavLink
+  to="/messages"
+  style={({ isActive, isPending, isTransitioning }) => {
+    return {
+      fontWeight: isActive ? "bold" : "",
+      color: isPending ? "red" : "black",
+      viewTransitionName: isTransitioning ? "slide" : "",
+    };
+  }}
+>
+  Messages
+</NavLink>
+// children
+<NavLink to="/tasks">
+  {({ isActive, isPending, isTransitioning }) => (
+    <span className={isActive ? "active" : ""}>Tasks</span>
+  )}
+</NavLink>
+Link
+
+Use <Link> when the link doesn't need active styling:
+
+import { Link } from "react-router";
+
+export function LoggedOutMessage() {
+  return (
+    <p>
+      You've been logged out.{" "}
+      <Link to="/login">Login again</Link>
+    </p>
+  );
+}
+Form
+
+The form component can be used to navigate with URLSearchParams provided by the user.
+
+<Form action="/search">
+  <input type="text" name="q" />
+</Form>
+If the user enters "journey" into the input and submits it, they will navigate to:
+
+/search?q=journey
+Forms with <Form method="post" /> will also navigate to the action prop but will submit the data as FormData instead of URLSearchParams. However, it is more common to useFetcher() to POST form data. See Using Fetchers.
+
+redirect
+
+Inside of route loaders and actions, you can redirect to another URL.
+
+import { redirect } from "react-router";
+
+export async function loader({ request }) {
+  let user = await getUser(request);
+  if (!user) {
+    return redirect("/login");
+  }
+  return { userName: user.name };
+}
+It is common to redirect to a new record after it has been created:
+
+import { redirect } from "react-router";
+
+export async function action({ request }) {
+  let formData = await request.formData();
+  let project = await createProject(formData);
+  return redirect(`/projects/${project.id}`);
+}
+useNavigate
+
+This hook allows the programmer to navigate the user to a new page without the user interacting. Usage of this hook should be uncommon. It's recommended to use the other APIs in this guide when possible.
+
+Reserve usage of useNavigate to situations where the user is not interacting but you need to navigate, for example:
+
+Logging them out after inactivity
+Timed UIs like quizzes, etc.
+import { useNavigate } from "react-router";
+
+export function useLogoutAfterInactivity() {
+  let navigate = useNavigate();
+
+  useFakeInactivityHook(() => {
+    navigate("/logout");
+  });
+}
+Next: Pending UI
+
+[2024-12-27 18:37:59]
+Installation
+
+React Router v7 requires the following minimum versions:
+
+node@20
+react@18
+react-dom@18
+You can start with a React template from Vite and choose "React", otherwise bootstrap your application however you prefer.
+
+npx create-vite@latest
+Copy code to clipboard
+Next install React Router from npm:
+
+npm i react-router
+Copy code to clipboard
+Finally, render a <BrowserRouter> around your application:
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router";
+import App from "./app";
+
+const root = document.getElementById("root");
+
+ReactDOM.createRoot(root).render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
+Copy code to clipboard
+
+
+[2024-12-27 18:38:23]
+URL Values
+
+Route Params
+
+Route params are the parsed values from a dynamic segment.
+
+<Route path="/concerts/:city" element={<City />} />
+Copy code to clipboard
+In this case, :city is the dynamic segment. The parsed value for that city will be available from useParams
+
+import { useParams } from "react-router";
+
+function City() {
+  let { city } = useParams();
+  let data = useFakeDataLibrary(`/api/v2/cities/${city}`);
+  // ...
+}
+Copy code to clipboard
+URL Search Params
+
+Search params are the values after a ? in the URL. They are accessible from useSearchParams, which returns an instance of URLSearchParams
+
+function SearchResults() {
+  let [searchParams] = useSearchParams();
+  return (
+    <div>
+      <p>
+        You searched for <i>{searchParams.get("q")}</i>
+      </p>
+      <FakeSearchResults />
+    </div>
+  );
+}
+Copy code to clipboard
+Location Object
+
+React Router creates a custom location object with some useful information on it accessible with useLocation.
+
+function useAnalytics() {
+  let location = useLocation();
+  useEffect(() => {
+    sendFakeAnalytics(location.pathname);
+  }, [location]);
+}
+
+function useScrollRestoration() {
+  let location = useLocation();
+  useEffect(() => {
+    fakeRestoreScroll(location.key);
+  }, [location]);
+}
+
+[2024-12-27 18:39:23]
+Address Book
+​
+ Summarize
+​
+We'll be building a small, but feature-rich address book app that lets you keep track of your contacts. There's no database or other "production ready" things, so we can stay focused on the features React Router gives you. We expect it to take 30-45m if you're following along, otherwise it's a quick read.
+
+You can also watch our walkthrough of the React Router Tutorial if you prefer 🎥
+
+ 
+👉 Every time you see this it means you need to do something in the app!
+
+The rest is just there for your information and deeper understanding. Let's get to it.
+
+Setup
+
+👉 Generate a basic template
+
+npx create-react-router@latest --template remix-run/react-router/tutorials/address-book
+This uses a pretty bare-bones template but includes our css and data model, so we can focus on React Router.
+
+👉 Start the app
+
+# cd into the app directory
+cd {wherever you put the app}
+
+# install dependencies if you haven't already
+npm install
+
+# start the server
+npm run dev
+You should be able to open up http://localhost:5173 and see an unstyled screen that looks like this:
+
+The Root Route
+
+Note the file at app/root.tsx. This is what we call the "Root Route". It's the first component in the UI that renders, so it typically contains the global layout for the page, as well as a the default Error Boundary.
+
+Expand here to see the root component code
+The Contact Route UI
+
+If you click on one of the sidebar items you'll get the default 404 page. Let's create a route that matches the url /contacts/1.
+
+👉 Create a contact route module
+
+mkdir app/routes
+touch app/routes/contact.tsx
+We could put this file anywhere we want, but to make things a bit more organized, we'll put all our routes inside the app/routes directory.
+
+You can also use file-based routing if you prefer.
+
+👉 Configure the route
+
+We need to tell React Router about our new route. routes.ts is a special file where we can configure all our routes.
+
+import type { RouteConfig } from "@react-router/dev/routes";
+import { route } from "@react-router/dev/routes";
+
+export default [
+  route("contacts/:contactId", "routes/contact.tsx"),
+] satisfies RouteConfig;
+In React Router, : makes a segment dynamic. We just made the following urls match the routes/contact.tsx route module:
+
+/contacts/123
+/contacts/abc
+👉 Add the contact component UI
+
+It's just a bunch of elements, feel free to copy/paste.
+
+import { Form } from "react-router";
+
+import type { ContactRecord } from "../data";
+
+export default function Contact() {
+  const contact = {
+    first: "Your",
+    last: "Name",
+    avatar: "https://placecats.com/200/200",
+    twitter: "your_handle",
+    notes: "Some notes",
+    favorite: true,
+  };
+
+  return (
+    <div id="contact">
+      <div>
+        <img
+          alt={`${contact.first} ${contact.last} avatar`}
+          key={contact.avatar}
+          src={contact.avatar}
+        />
+      </div>
+
+      <div>
+        <h1>
+          {contact.first || contact.last ? (
+            <>
+              {contact.first} {contact.last}
+            </>
+          ) : (
+            <i>No Name</i>
+          )}
+          <Favorite contact={contact} />
+        </h1>
+
+        {contact.twitter ? (
+          <p>
+            <a
+              href={`https://twitter.com/${contact.twitter}`}
+            >
+              {contact.twitter}
+            </a>
+          </p>
+        ) : null}
+
+        {contact.notes ? <p>{contact.notes}</p> : null}
+
+        <div>
+          <Form action="edit">
+            <button type="submit">Edit</button>
+          </Form>
+
+          <Form
+            action="destroy"
+            method="post"
+            onSubmit={(event) => {
+              const response = confirm(
+                "Please confirm you want to delete this record."
+              );
+              if (!response) {
+                event.preventDefault();
+              }
+            }}
+          >
+            <button type="submit">Delete</button>
+          </Form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Favorite({
+  contact,
+}: {
+  contact: Pick<ContactRecord, "favorite">;
+}) {
+  const favorite = contact.favorite;
+
+  return (
+    <Form method="post">
+      <button
+        aria-label={
+          favorite
+            ? "Remove from favorites"
+            : "Add to favorites"
+        }
+        name="favorite"
+        value={favorite ? "false" : "true"}
+      >
+        {favorite ? "★" : "☆"}
+      </button>
+    </Form>
+  );
+}
+Now if we click one of the links or visit /contacts/1 we get ... nothing new?
+
+
+Nested Routes and Outlets
+
+React Router supports nested routing. In order for child routes to render inside of parent layouts, we need to render an Outlet in the parent. Let's fix it, open up app/root.tsx and render an outlet inside.
+
+👉 Render an <Outlet />
+
+import {
+  Form,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  isRouteErrorResponse,
+} from "react-router";
+
+// existing imports & exports
+
+export default function App() {
+  return (
+    <>
+      <div id="sidebar">{/* other elements */}</div>
+      <div id="detail">
+        <Outlet />
+      </div>
+    </>
+  );
+}
+Now the child route should be rendering through the outlet.
+
+
+Client Side Routing
+
+You may or may not have noticed, but when we click the links in the sidebar, the browser is doing a full document request for the next URL instead of client side routing, which completely remounts our app
+
+Client side routing allows our app to update the URL without reloading the entire page. Instead, the app can immediately render new UI. Let's make it happen with <Link>.
+
+👉 Change the sidebar <a href> to <Link to>
+
+import {
+  Form,
+  Link,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  isRouteErrorResponse,
+} from "react-router";
+
+// existing imports & exports
+
+export default function App() {
+  return (
+    <>
+      <div id="sidebar">
+        {/* other elements */}
+        <nav>
+          <ul>
+            <li>
+              <Link to={`/contacts/1`}>Your Name</Link>
+            </li>
+            <li>
+              <Link to={`/contacts/2`}>Your Friend</Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      {/* other elements */}
+    </>
+  );
+}
+You can open the network tab in the browser devtools to see that it's not requesting documents anymore.
+
+Loading Data
+
+URL segments, layouts, and data are more often than not coupled (tripled?) together. We can see it in this app already:
+
+URL Segment	Component	Data
+/	<App>	list of contacts
+contacts/:contactId	<Contact>	individual contact
+Because of this natural coupling, React Router has data conventions to get data into your route components easily.
+
+First we'll create and export a clientLoader function in the root route and then render the data.
+
+👉 Export a clientLoader function from app/root.tsx and render the data
+
+The following code has a type error in it, we'll fix it in the next section
+
+// existing imports
+import { getContacts } from "./data";
+
+// existing exports
+
+export async function clientLoader() {
+  const contacts = await getContacts();
+  return { contacts };
+}
+
+export default function App({ loaderData }) {
+  const { contacts } = loaderData;
+
+  return (
+    <>
+      <div id="sidebar">
+        {/* other elements */}
+        <nav>
+          {contacts.length ? (
+            <ul>
+              {contacts.map((contact) => (
+                <li key={contact.id}>
+                  <Link to={`contacts/${contact.id}`}>
+                    {contact.first || contact.last ? (
+                      <>
+                        {contact.first} {contact.last}
+                      </>
+                    ) : (
+                      <i>No Name</i>
+                    )}
+                    {contact.favorite ? (
+                      <span>★</span>
+                    ) : null}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>
+              <i>No contacts</i>
+            </p>
+          )}
+        </nav>
+      </div>
+      {/* other elements */}
+    </>
+  );
+}
+That's it! React Router will now automatically keep that data in sync with your UI. The sidebar should now look like this:
+
+
+You may be wondering why we're "client" loading data instead of loading the data on the server so we can do server-side rendering (SSR). Right now our contacts site is a Single Page App, so there's no server-side rendering. This makes it really easy to deploy to any static hosting provider, but we'll talk more about how to enable SSR in a bit so you can learn about all the different rendering strategies React Router offers.
+
+Type Safety
+
+You probably noticed that we didn't assign a type to the loaderData prop. Let's fix that.
+
+👉 Add the ComponentProps type to the App component
+
+// existing imports
+import type { Route } from "./+types/root";
+// existing imports & exports
+
+export default function App({
+  loaderData,
+}: Route.ComponentProps) {
+  const { contacts } = loaderData;
+
+  // existing code
+}
+Wait, what? Where did these types come from?!
+
+We didn't define them, yet somehow they already know about the contacts property we returned from our clientLoader.
+
+That's because React Router generates types for each route in your app to provide automatic type safety.
+
+Adding a HydrateFallback
+
+We mentioned earlier that we are working on a Single Page App with no server-side rendering. If you look inside of react-router.config.ts you'll see that this is configured with a simple boolean:
+
+import { type Config } from "@react-router/dev/config";
+
+export default {
+  ssr: false,
+} satisfies Config;
+You might have started noticing that whenever you refresh the page you get a flash of white before the app loads. Since we're only rendering on the client, there's nothing to show the user while the app is loading.
+
+👉 Add a HydrateFallback export
+
+We can provide a fallback that will show up before the app is hydrated (rendering on the client for the first time) with a HydrateFallback export.
+
+// existing imports & exports
+
+export function HydrateFallback() {
+  return (
+    <div id="loading-splash">
+      <div id="loading-splash-spinner" />
+      <p>Loading, please wait...</p>
+    </div>
+  );
+}
+Now if you refresh the page, you'll briefly see the loading splash before the app is hydrated.
+
+
+Index Routes
+
+When you load the app and aren't yet on a contact page, you'll notice a big blank page on the right side of the list.
+
+
+When a route has children, and you're at the parent route's path, the <Outlet> has nothing to render because no children match. You can think of index routes as the default child route to fill in that space.
+
+👉 Create an index route for the root route
+
+touch app/routes/home.tsx
+import type { RouteConfig } from "@react-router/dev/routes";
+import { index, route } from "@react-router/dev/routes";
+
+export default [
+  index("routes/home.tsx"),
+  route("contacts/:contactId", "routes/contact.tsx"),
+] satisfies RouteConfig;
+👉 Fill in the index component's elements
+
+Feel free to copy/paste, nothing special here.
+
+export default function Home() {
+  return (
+    <p id="index-page">
+      This is a demo for React Router.
+      <br />
+      Check out{" "}
+      <a href="https://reactrouter.com">
+        the docs at reactrouter.com
+      </a>
+      .
+    </p>
+  );
+}
+
+Voilà! No more blank space. It's common to put dashboards, stats, feeds, etc. at index routes. They can participate in data loading as well.
+
+Adding an About Route
+
+Before we move on to working with dynamic data that the user can interact with, let's add a page with static content we expect to rarely change. An about page will be perfect for this.
+
+👉 Create the about route
+
+touch app/routes/about.tsx
+Don't forget to add the route to app/routes.ts:
+
+export default [
+  index("routes/home.tsx"),
+  route("contacts/:contactId", "routes/contact.tsx"),
+  route("about", "routes/about.tsx"),
+] satisfies RouteConfig;
+👉 Add the about page UI
+
+Nothing too special here, just copy and paste:
+
+import { Link } from "react-router";
+
+export default function About() {
+  return (
+    <div id="about">
+      <Link to="/">← Go to demo</Link>
+      <h1>About React Router Contacts</h1>
+
+      <div>
+        <p>
+          This is a demo application showing off some of the
+          powerful features of React Router, including
+          dynamic routing, nested routes, loaders, actions,
+          and more.
+        </p>
+
+        <h2>Features</h2>
+        <p>
+          Explore the demo to see how React Router handles:
+        </p>
+        <ul>
+          <li>
+            Data loading and mutations with loaders and
+            actions
+          </li>
+          <li>
+            Nested routing with parent/child relationships
+          </li>
+          <li>URL-based routing with dynamic segments</li>
+          <li>Pending and optimistic UI</li>
+        </ul>
+
+        <h2>Learn More</h2>
+        <p>
+          Check out the official documentation at{" "}
+          <a href="https://reactrouter.com">
+            reactrouter.com
+          </a>{" "}
+          to learn more about building great web
+          applications with React Router.
+        </p>
+      </div>
+    </div>
+  );
+}
+👉 Add a link to the about page in the sidebar
+
+export default function App() {
+  return (
+    <>
+      <div id="sidebar">
+        <h1>
+          <Link to="about">React Router Contacts</Link>
+        </h1>
+        {/* other elements */}
+      </div>
+      {/* other elements */}
+    </>
+  );
+}
+Now navigate to the about page and it should look like this:
+
+
+Layout Routes
+
+We don't actually want the about page to be nested inside of the sidebar layout. Let's move the sidebar to a layout so we can avoid rendering it on the about page. Additionally, we want to avoid loading all the contacts data on the about page.
+
+👉 Create a layout route for the sidebar
+
+You can name and put this layout route wherever you want, but putting it inside of a layouts directory will help keep things organized for our simple app.
+
+mkdir app/layouts
+touch app/layouts/sidebar.tsx
+For now just return an <Outlet>.
+
+import { Outlet } from "react-router";
+
+export default function SidebarLayout() {
+  return <Outlet />;
+}
+👉 Move route definitions under the sidebar layout
+
+We can define a layout route to automatically render the sidebar for all matched routes within in. This is basically what our root was, but now we can scope it to specific routes.
+
+import type { RouteConfig } from "@react-router/dev/routes";
+import {
+  index,
+  layout,
+  route,
+} from "@react-router/dev/routes";
+
+export default [
+  layout("layouts/sidebar.tsx", [
+    index("routes/home.tsx"),
+    route("contacts/:contactId", "routes/contact.tsx"),
+  ]),
+  route("about", "routes/about.tsx"),
+] satisfies RouteConfig;
+👉 Move the layout and data fetching to the sidebar layout
+
+We want to move the clientLoader and everything inside the App component to the sidebar layout. It should look like this:
+
+import { Form, Link, Outlet } from "react-router";
+import { getContacts } from "../data";
+import type { Route } from "./+types/sidebar";
+
+export async function clientLoader() {
+  const contacts = await getContacts();
+  return { contacts };
+}
+
+export default function SidebarLayout({
+  loaderData,
+}: Route.ComponentProps) {
+  const { contacts } = loaderData;
+
+  return (
+    <>
+      <div id="sidebar">
+        <h1>
+          <Link to="about">React Router Contacts</Link>
+        </h1>
+        <div>
+          <Form id="search-form" role="search">
+            <input
+              aria-label="Search contacts"
+              id="q"
+              name="q"
+              placeholder="Search"
+              type="search"
+            />
+            <div
+              aria-hidden
+              hidden={true}
+              id="search-spinner"
+            />
+          </Form>
+          <Form method="post">
+            <button type="submit">New</button>
+          </Form>
+        </div>
+        <nav>
+          {contacts.length ? (
+            <ul>
+              {contacts.map((contact) => (
+                <li key={contact.id}>
+                  <Link to={`contacts/${contact.id}`}>
+                    {contact.first || contact.last ? (
+                      <>
+                        {contact.first} {contact.last}
+                      </>
+                    ) : (
+                      <i>No Name</i>
+                    )}
+                    {contact.favorite ? (
+                      <span>★</span>
+                    ) : null}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>
+              <i>No contacts</i>
+            </p>
+          )}
+        </nav>
+      </div>
+      <div id="detail">
+        <Outlet />
+      </div>
+    </>
+  );
+}
+And inside app/root.tsx, App should just return an <Outlet>, and all unused imports can be removed. Make sure there is no clientLoader in root.tsx.
+
+// existing imports and exports
+
+export default function App() {
+  return <Outlet />;
+}
+Now with that shuffling around done, our about page no longer loads contacts data nor is it nested inside of the sidebar layout:
+
+
+Pre-rendering a Static Route
+
+If you refresh the about page, you still see the loading spinner for just a split second before the page render on the client. This is really not a good experience, plus the page is just static information, we should be able to pre-render it as static HTML at build time.
+
+👉 Pre-render the about page
+
+Inside of react-router.config.ts, we can add a prerender array to the config to tell React Router to pre-render certain urls at build time. In this case we just want to pre-render the about page.
+
+import { type Config } from "@react-router/dev/config";
+
+export default {
+  ssr: false,
+  prerender: ["/about"],
+} satisfies Config;
+Now if you go to the about page and refresh, you won't see the loading spinner!
+
+If you're still seeing a spinner when you refresh, make sure you deleted the clientLoader in root.tsx.
+
+Server-Side Rendering
+
+React Router is a great framework for building Single Page Apps. Many applications are served well by only client-side rendering, and maybe statically pre-rendering a few pages at build time.
+
+If you ever do want to introduce server-side rendering into your React Router application, it's incredibly easy (remember that ssr: false boolean from earlier?).
+
+👉 Enable server-side rendering
+
+export default {
+  ssr: true,
+  prerender: ["/about"],
+} satisfies Config;
+And now... nothing is different? We're still getting our spinner for a split second before the page renders on the client? Plus, aren't we using clientLoader, so our data is still being fetched on the client?
+
+That's right! With React Router you can still use clientLoader (and clientAction) to do client-side data fetching where you see fit. React Router gives you a lot of flexibility to use the right tool for the job.
+
+Let's switch to using loader, which (you guessed it) is used to fetch data on the server.
+
+👉 Switch to using loader to fetch data
+
+// existing imports
+
+export async function loader() {
+  const contacts = await getContacts();
+  return { contacts };
+}
+Whether you set ssr to true or false depends on you and your users needs. Both strategies are perfectly valid. For the remainder of this tutorial we're going to use server-side rendering, but know that all rendering strategies are first class citizens in React Router.
+
+URL Params in Loaders
+
+👉 Click on one of the sidebar links
+
+We should be seeing our old static contact page again, with one difference: the URL now has a real ID for the record.
+
+
+Remember the :contactId part of the route definition in app/routes.ts? These dynamic segments will match dynamic (changing) values in that position of the URL. We call these values in the URL "URL Params", or just "params" for short.
+
+These params are passed to the loader with keys that match the dynamic segment. For example, our segment is named :contactId so the value will be passed as params.contactId.
+
+These params are most often used to find a record by ID. Let's try it out.
+
+👉 Add a loader function to the contact page and access data with loaderData
+
+The following code has type errors in it, we'll fix them in the next section
+
+// existing imports
+import { getContact } from "../data";
+import type { Route } from "./+types/contact";
+
+export async function loader({ params }: Route.LoaderArgs) {
+  const contact = await getContact(params.contactId);
+  return { contact };
+}
+
+export default function Contact({
+  loaderData,
+}: Route.ComponentProps) {
+  const { contact } = loaderData;
+
+  // existing code
+}
+
+// existing code
+
+Throwing Responses
+
+You'll notice that the type of loaderData.contact is ContactRecord | null. Based on our automatic type safety, TypeScript already knows that params.contactId is a string, but we haven't done anything to make sure it's a valid ID. Since the contact might not exist, getContact could return null, which is why we have type errors.
+
+We could account for the possibility of the contact being not found in component code, but the webby thing to do is send a proper 404. We can do that in the loader and solve all of our problems at once.
+
+// existing imports
+
+export async function loader({ params }: Route.LoaderArgs) {
+  const contact = await getContact(params.contactId);
+  if (!contact) {
+    throw new Response("Not Found", { status: 404 });
+  }
+  return { contact };
+}
+
+// existing code
+Now, if the user isn't found, code execution down this path stops and React Router renders the error path instead. Components in React Router can focus only on the happy path 😁
+
+Data Mutations
+
+We'll create our first contact in a second, but first let's talk about HTML.
+
+React Router emulates HTML Form navigation as the data mutation primitive, which used to be the only way prior to the JavaScript cambrian explosion. Don't be fooled by the simplicity! Forms in React Router give you the UX capabilities of client rendered apps with the simplicity of the "old school" web model.
+
+While unfamiliar to some web developers, HTML forms actually cause a navigation in the browser, just like clicking a link. The only difference is in the request: links can only change the URL while forms can also change the request method (GET vs. POST) and the request body (POST form data).
+
+Without client side routing, the browser will serialize the form's data automatically and send it to the server as the request body for POST, and as URLSearchParams for GET. React Router does the same thing, except instead of sending the request to the server, it uses client side routing and sends it to the route's action function.
+
+We can test this out by clicking the "New" button in our app.
+
+
+React Router sends a 405 because there is no code on the server to handle this form navigation.
+
+Creating Contacts
+
+We'll create new contacts by exporting an action function in our root route. When the user clicks the "new" button, the form will POST to the root route action.
+
+👉 Export an action function from app/root.tsx
+
+// existing imports
+
+import { createEmptyContact } from "./data";
+
+export async function action() {
+  const contact = await createEmptyContact();
+  return { contact };
+}
+
+// existing code
+That's it! Go ahead and click the "New" button, and you should see a new record pop into the list 🥳
+
+
+The createEmptyContact method just creates an empty contact with no name or data or anything. But it does still create a record, promise!
+
+🧐 Wait a sec ... How did the sidebar update? Where did we call the action function? Where's the code to re-fetch the data? Where are useState, onSubmit and useEffect?!
+
+This is where the "old school web" programming model shows up. <Form> prevents the browser from sending the request to the server and sends it to your route's action function instead with fetch.
+
+In web semantics, a POST usually means some data is changing. By convention, React Router uses this as a hint to automatically revalidate the data on the page after the action finishes.
+
+In fact, since it's all just HTML and HTTP, you could disable JavaScript and the whole thing will still work. Instead of React Router serializing the form and making a fetch request to your server, the browser will serialize the form and make a document request. From there React Router will render the page server side and send it down. It's the same UI in the end either way.
+
+We'll keep JavaScript around though because we're going to make a better user experience than spinning favicons and static documents.
+
+Updating Data
+
+Let's add a way to fill the information for our new record.
+
+Just like creating data, you update data with <Form>. Let's make a new route module inside app/routes/edit-contact.tsx.
+
+👉 Create the edit contact route
+
+touch app/routes/edit-contact.tsx
+Don't forget to add the route to app/routes.ts:
+
+export default [
+  layout("layouts/sidebar.tsx", [
+    index("routes/home.tsx"),
+    route("contacts/:contactId", "routes/contact.tsx"),
+    route(
+      "contacts/:contactId/edit",
+      "routes/edit-contact.tsx"
+    ),
+  ]),
+  route("about", "routes/about.tsx"),
+] satisfies RouteConfig;
+👉 Add the edit page UI
+
+Nothing we haven't seen before, feel free to copy/paste:
+
+import { Form } from "react-router";
+import type { Route } from "./+types/edit-contact";
+
+import { getContact } from "../data";
+
+export async function loader({ params }: Route.LoaderArgs) {
+  const contact = await getContact(params.contactId);
+  if (!contact) {
+    throw new Response("Not Found", { status: 404 });
+  }
+  return { contact };
+}
+
+export default function EditContact({
+  loaderData,
+}: Route.ComponentProps) {
+  const { contact } = loaderData;
+
+  return (
+    <Form key={contact.id} id="contact-form" method="post">
+      <p>
+        <span>Name</span>
+        <input
+          aria-label="First name"
+          defaultValue={contact.first}
+          name="first"
+          placeholder="First"
+          type="text"
+        />
+        <input
+          aria-label="Last name"
+          defaultValue={contact.last}
+          name="last"
+          placeholder="Last"
+          type="text"
+        />
+      </p>
+      <label>
+        <span>Twitter</span>
+        <input
+          defaultValue={contact.twitter}
+          name="twitter"
+          placeholder="@jack"
+          type="text"
+        />
+      </label>
+      <label>
+        <span>Avatar URL</span>
+        <input
+          aria-label="Avatar URL"
+          defaultValue={contact.avatar}
+          name="avatar"
+          placeholder="https://example.com/avatar.jpg"
+          type="text"
+        />
+      </label>
+      <label>
+        <span>Notes</span>
+        <textarea
+          defaultValue={contact.notes}
+          name="notes"
+          rows={6}
+        />
+      </label>
+      <p>
+        <button type="submit">Save</button>
+        <button type="button">Cancel</button>
+      </p>
+    </Form>
+  );
+}
+Now click on your new record, then click the "Edit" button. We should see the new route.
+
+
+Updating Contacts with FormData
+
+The edit route we just created already renders a form. All we need to do is add the action function. React Router will serialize the form, POST it with fetch, and automatically revalidate all the data.
+
+👉 Add an action function to the edit route
+
+import { Form, redirect } from "react-router";
+// existing imports
+
+import { getContact, updateContact } from "../data";
+
+export async function action({
+  params,
+  request,
+}: Route.ActionArgs) {
+  const formData = await request.formData();
+  const updates = Object.fromEntries(formData);
+  await updateContact(params.contactId, updates);
+  return redirect(`/contacts/${params.contactId}`);
+}
+
+// existing code
+Fill out the form, hit save, and you should see something like this! (Except easier on the eyes and maybe with the patience to cut watermelon.)
+
+
+Mutation Discussion
+
+😑 It worked, but I have no idea what is going on here...
+
+Let's dig in a bit...
+
+Open up app/routes/edit-contact.tsx and look at the form elements. Notice how they each have a name:
+
+<input
+  aria-label="First name"
+  defaultValue={contact.first}
+  name="first"
+  placeholder="First"
+  type="text"
+/>
+Without JavaScript, when a form is submitted, the browser will create FormData and set it as the body of the request when it sends it to the server. As mentioned before, React Router prevents that and emulates the browser by sending the request to your action function with fetch instead, including the FormData.
+
+Each field in the form is accessible with formData.get(name). For example, given the input field from above, you could access the first and last names like this:
+
+export const action = async ({
+  params,
+  request,
+}: ActionFunctionArgs) => {
+  const formData = await request.formData();
+  const firstName = formData.get("first");
+  const lastName = formData.get("last");
+  // ...
+};
+Since we have a handful of form fields, we used Object.fromEntries to collect them all into an object, which is exactly what our updateContact function wants.
+
+const updates = Object.fromEntries(formData);
+updates.first; // "Some"
+updates.last; // "Name"
+Aside from the action function, none of these APIs we're discussing are provided by React Router: request, request.formData, Object.fromEntries are all provided by the web platform.
+
+After we finished the action, note the redirect at the end:
+
+export async function action({
+  params,
+  request,
+}: Route.ActionArgs) {
+  invariant(params.contactId, "Missing contactId param");
+  const formData = await request.formData();
+  const updates = Object.fromEntries(formData);
+  await updateContact(params.contactId, updates);
+  return redirect(`/contacts/${params.contactId}`);
+}
+action and loader functions can both return a Response (makes sense, since they received a Request!). The redirect helper just makes it easier to return a Response that tells the app to change locations.
+
+Without client side routing, if a server redirected after a POST request, the new page would fetch the latest data and render. As we learned before, React Router emulates this model and automatically revalidates the data on the page after the action call. That's why the sidebar automatically updates when we save the form. The extra revalidation code doesn't exist without client side routing, so it doesn't need to exist with client side routing in React Router either!
+
+One last thing. Without JavaScript, the redirect would be a normal redirect. However, with JavaScript it's a client-side redirect, so the user doesn't lose client state like scroll positions or component state.
+
+Redirecting new records to the edit page
+
+Now that we know how to redirect, let's update the action that creates new contacts to redirect to the edit page:
+
+👉 Redirect to the new record's edit page
+
+import {
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  isRouteErrorResponse,
+  redirect,
+} from "react-router";
+// existing imports
+
+export async function action() {
+  const contact = await createEmptyContact();
+  return redirect(`/contacts/${contact.id}/edit`);
+}
+
+// existing code
+Now when we click "New", we should end up on the edit page:
+
+
+Active Link Styling
+
+Now that we have a bunch of records, it's not clear which one we're looking at in the sidebar. We can use NavLink to fix this.
+
+👉 Replace <Link> with <NavLink> in the sidebar
+
+import { Form, Link, NavLink, Outlet } from "react-router";
+
+// existing imports and exports
+
+export default function SidebarLayout({
+  loaderData,
+}: Route.ComponentProps) {
+  const { contacts } = loaderData;
+
+  return (
+    <>
+      <div id="sidebar">
+        {/* existing elements */}
+        <ul>
+          {contacts.map((contact) => (
+            <li key={contact.id}>
+              <NavLink
+                className={({ isActive, isPending }) =>
+                  isActive
+                    ? "active"
+                    : isPending
+                    ? "pending"
+                    : ""
+                }
+                to={`contacts/${contact.id}`}
+              >
+                {/* existing elements */}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+        {/* existing elements */}
+      </div>
+      {/* existing elements */}
+    </>
+  );
+}
+Note that we are passing a function to className. When the user is at the URL that matches <NavLink to>, then isActive will be true. When it's about to be active (the data is still loading) then isPending will be true. This allows us to easily indicate where the user is and also provide immediate feedback when links are clicked but data needs to be loaded.
+
+
+Global Pending UI
+
+As the user navigates the app, React Router will leave the old page up as data is loading for the next page. You may have noticed the app feels a little unresponsive as you click between the list. Let's provide the user with some feedback so the app doesn't feel unresponsive.
+
+React Router is managing all the state behind the scenes and reveals the pieces you need to build dynamic web apps. In this case, we'll use the useNavigation hook.
+
+👉 Use useNavigation to add global pending UI
+
+import {
+  Form,
+  Link,
+  NavLink,
+  Outlet,
+  useNavigation,
+} from "react-router";
+
+export default function SidebarLayout({
+  loaderData,
+}: Route.ComponentProps) {
+  const { contacts } = loaderData;
+  const navigation = useNavigation();
+
+  return (
+    <>
+      {/* existing elements */}
+      <div
+        className={
+          navigation.state === "loading" ? "loading" : ""
+        }
+        id="detail"
+      >
+        <Outlet />
+      </div>
+    </>
+  );
+}
+useNavigation returns the current navigation state: it can be one of "idle", "loading" or "submitting".
+
+In our case, we add a "loading" class to the main part of the app if we're not idle. The CSS then adds a nice fade after a short delay (to avoid flickering the UI for fast loads). You could do anything you want though, like show a spinner or loading bar across the top.
+
+
+Deleting Records
+
+If we review code in the contact route, we can find the delete button looks like this:
+
+<Form
+  action="destroy"
+  method="post"
+  onSubmit={(event) => {
+    const response = confirm(
+      "Please confirm you want to delete this record."
+    );
+    if (!response) {
+      event.preventDefault();
+    }
+  }}
+>
+  <button type="submit">Delete</button>
+</Form>
+Note the action points to "destroy". Like <Link to>, <Form action> can take a relative value. Since the form is rendered in the route contacts/:contactId, then a relative action with destroy will submit the form to contacts/:contactId/destroy when clicked.
+
+At this point you should know everything you need to know to make the delete button work. Maybe give it a shot before moving on? You'll need:
+
+A new route
+An action at that route
+deleteContact from app/data.ts
+redirect to somewhere after
+👉 Configure the "destroy" route module
+
+touch app/routes/destroy-contact.tsx
+export default [
+  // existing routes
+  route(
+    "contacts/:contactId/destroy",
+    "routes/destroy-contact.tsx"
+  ),
+  // existing routes
+] satisfies RouteConfig;
+👉 Add the destroy action
+
+import { redirect } from "react-router";
+import type { Route } from "./+types/destroy-contact";
+
+import { deleteContact } from "../data";
+
+export async function action({ params }: Route.ActionArgs) {
+  await deleteContact(params.contactId);
+  return redirect("/");
+}
+Alright, navigate to a record and click the "Delete" button. It works!
+
+😅 I'm still confused why this all works
+
+When the user clicks the submit button:
+
+<Form> prevents the default browser behavior of sending a new document POST request to the server, but instead emulates the browser by creating a POST request with client side routing and fetch
+The <Form action="destroy"> matches the new route at contacts/:contactId/destroy and sends it the request
+After the action redirects, React Router calls all the loaders for the data on the page to get the latest values (this is "revalidation"). loaderData in routes/contact.tsx now has new values and causes the components to update!
+Add a Form, add an action, React Router does the rest.
+
+Cancel Button
+
+On the edit page we've got a cancel button that doesn't do anything yet. We'd like it to do the same thing as the browser's back button.
+
+We'll need a click handler on the button as well as useNavigate.
+
+👉 Add the cancel button click handler with useNavigate
+
+import { Form, redirect, useNavigate } from "react-router";
+// existing imports & exports
+
+export default function EditContact({
+  loaderData,
+}: Route.ComponentProps) {
+  const { contact } = loaderData;
+  const navigate = useNavigate();
+
+  return (
+    <Form key={contact.id} id="contact-form" method="post">
+      {/* existing elements */}
+      <p>
+        <button type="submit">Save</button>
+        <button onClick={() => navigate(-1)} type="button">
+          Cancel
+        </button>
+      </p>
+    </Form>
+  );
+}
+Now when the user clicks "Cancel", they'll be sent back one entry in the browser's history.
+
+🧐 Why is there no event.preventDefault() on the button?
+
+A <button type="button">, while seemingly redundant, is the HTML way of preventing a button from submitting its form.
+
+Two more features to go. We're on the home stretch!
+
+URLSearchParams and GET Submissions
+
+All of our interactive UI so far have been either links that change the URL or forms that post data to action functions. The search field is interesting because it's a mix of both: it's a form, but it only changes the URL, it doesn't change data.
+
+Let's see what happens when we submit the search form:
+
+👉 Type a name into the search field and hit the enter key
+
+Note the browser's URL now contains your query in the URL as URLSearchParams:
+
+http://localhost:5173/?q=ryan
+Since it's not <Form method="post">, React Router emulates the browser by serializing the FormData into the URLSearchParams instead of the request body.
+
+loader functions have access to the search params from the request. Let's use it to filter the list:
+
+👉 Filter the list if there are URLSearchParams
+
+// existing imports & exports
+
+export async function loader({
+  request,
+}: Route.LoaderArgs) {
+  const url = new URL(request.url);
+  const q = url.searchParams.get("q");
+  const contacts = await getContacts(q);
+  return { contacts };
+}
+
+// existing code
+
+Because this is a GET, not a POST, React Router does not call the action function. Submitting a GET form is the same as clicking a link: only the URL changes.
+
+This also means it's a normal page navigation. You can click the back button to get back to where you were.
+
+Synchronizing URLs to Form State
+
+There are a couple of UX issues here that we can take care of quickly.
+
+If you click back after a search, the form field still has the value you entered even though the list is no longer filtered.
+If you refresh the page after searching, the form field no longer has the value in it, even though the list is filtered
+In other words, the URL and our input's state are out of sync.
+
+Let's solve (2) first and start the input with the value from the URL.
+
+👉 Return q from your loader, set it as the input's default value
+
+// existing imports & exports
+
+export async function loader({
+  request,
+}: Route.LoaderArgs) {
+  const url = new URL(request.url);
+  const q = url.searchParams.get("q");
+  const contacts = await getContacts(q);
+  return { contacts, q };
+}
+
+export default function SidebarLayout({
+  loaderData,
+}: Route.ComponentProps) {
+  const { contacts, q } = loaderData;
+  const navigation = useNavigation();
+
+  return (
+    <>
+      <div id="sidebar">
+        {/* existing elements */}
+        <div>
+          <Form id="search-form" role="search">
+            <input
+              aria-label="Search contacts"
+              defaultValue={q || ""}
+              id="q"
+              name="q"
+              placeholder="Search"
+              type="search"
+            />
+            {/* existing elements */}
+          </Form>
+          {/* existing elements */}
+        </div>
+        {/* existing elements */}
+      </div>
+      {/* existing elements */}
+    </>
+  );
+}
+The input field will show the query if you refresh the page after a search now.
+
+Now for problem (1), clicking the back button and updating the input. We can bring in useEffect from React to manipulate the input's value in the DOM directly.
+
+👉 Synchronize input value with the URLSearchParams
+
+// existing imports
+import { useEffect } from "react";
+
+// existing imports & exports
+
+export default function SidebarLayout({
+  loaderData,
+}: Route.ComponentProps) {
+  const { contacts, q } = loaderData;
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const searchField = document.getElementById("q");
+    if (searchField instanceof HTMLInputElement) {
+      searchField.value = q || "";
+    }
+  }, [q]);
+
+  // existing code
+}
+🤔 Shouldn't you use a controlled component and React State for this?
+
+You could certainly do this as a controlled component. You will have more synchronization points, but it's up to you.
+
+Expand this to see what it would look like
+Alright, you should now be able to click the back/forward/refresh buttons and the input's value should be in sync with the URL and results.
+
+Submitting Form's onChange
+
+We've got a product decision to make here. Sometimes you want the user to submit the form to filter some results, other times you want to filter as the user types. We've already implemented the first, so let's see what it's like for the second.
+
+We've seen useNavigate already, we'll use its cousin, useSubmit, for this.
+
+import {
+  Form,
+  Link,
+  NavLink,
+  Outlet,
+  useNavigation,
+  useSubmit,
+} from "react-router";
+// existing imports & exports
+
+export default function SidebarLayout({
+  loaderData,
+}: Route.ComponentProps) {
+  const { contacts, q } = loaderData;
+  const navigation = useNavigation();
+  const submit = useSubmit();
+
+  // existing code
+
+  return (
+    <>
+      <div id="sidebar">
+        {/* existing elements */}
+        <div>
+          <Form
+            id="search-form"
+            onChange={(event) =>
+              submit(event.currentTarget)
+            }
+            role="search"
+          >
+            {/* existing elements */}
+          </Form>
+          {/* existing elements */}
+        </div>
+        {/* existing elements */}
+      </div>
+      {/* existing elements */}
+    </>
+  );
+}
+As you type, the form is automatically submitted now!
+
+Note the argument to submit. The submit function will serialize and submit any form you pass to it. We're passing in event.currentTarget. The currentTarget is the DOM node the event is attached to (the form).
+
+Adding Search Spinner
+
+In a production app, it's likely this search will be looking for records in a database that is too large to send all at once and filter client side. That's why this demo has some faked network latency.
+
+Without any loading indicator, the search feels kinda sluggish. Even if we could make our database faster, we'll always have the user's network latency in the way and out of our control.
+
+For a better user experience, let's add some immediate UI feedback for the search. We'll use useNavigation again.
+
+👉 Add a variable to know if we're searching
+
+// existing imports & exports
+
+export default function SidebarLayout({
+  loaderData,
+}: Route.ComponentProps) {
+  const { contacts, q } = loaderData;
+  const navigation = useNavigation();
+  const submit = useSubmit();
+  const searching =
+    navigation.location &&
+    new URLSearchParams(navigation.location.search).has(
+      "q"
+    );
+
+  // existing code
+}
+When nothing is happening, navigation.location will be undefined, but when the user navigates it will be populated with the next location while data loads. Then we check if they're searching with location.search.
+
+👉 Add classes to search form elements using the new searching state
+
+// existing imports & exports
+
+export default function SidebarLayout({
+  loaderData,
+}: Route.ComponentProps) {
+  // existing code
+
+  return (
+    <>
+      <div id="sidebar">
+        {/* existing elements */}
+        <div>
+          <Form
+            id="search-form"
+            onChange={(event) =>
+              submit(event.currentTarget)
+            }
+            role="search"
+          >
+            <input
+              aria-label="Search contacts"
+              className={searching ? "loading" : ""}
+              defaultValue={q || ""}
+              id="q"
+              name="q"
+              placeholder="Search"
+              type="search"
+            />
+            <div
+              aria-hidden
+              hidden={!searching}
+              id="search-spinner"
+            />
+          </Form>
+          {/* existing elements */}
+        </div>
+        {/* existing elements */}
+      </div>
+      {/* existing elements */}
+    </>
+  );
+}
+Bonus points, avoid fading out the main screen when searching:
+
+// existing imports & exports
+
+export default function SidebarLayout({
+  loaderData,
+}: Route.ComponentProps) {
+  // existing code
+
+  return (
+    <>
+      {/* existing elements */}
+      <div
+        className={
+          navigation.state === "loading" && !searching
+            ? "loading"
+            : ""
+        }
+        id="detail"
+      >
+        <Outlet />
+      </div>
+      {/* existing elements */}
+    </>
+  );
+}
+You should now have a nice spinner on the left side of the search input.
+
+
+Managing the History Stack
+
+Since the form is submitted for every keystroke, typing the characters "alex" and then deleting them with backspace results in a huge history stack 😂. We definitely don't want this:
+
+
+We can avoid this by replacing the current entry in the history stack with the next page, instead of pushing into it.
+
+👉 Use replace in submit
+
+// existing imports & exports
+
+export default function SidebarLayout({
+  loaderData,
+}: Route.ComponentProps) {
+  // existing code
+
+  return (
+    <>
+      <div id="sidebar">
+        {/* existing elements */}
+        <div>
+          <Form
+            id="search-form"
+            onChange={(event) => {
+              const isFirstSearch = q === null;
+              submit(event.currentTarget, {
+                replace: !isFirstSearch,
+              });
+            }}
+            role="search"
+          >
+            {/* existing elements */}
+          </Form>
+          {/* existing elements */}
+        </div>
+        {/* existing elements */}
+      </div>
+      {/* existing elements */}
+    </>
+  );
+}
+After a quick check if this is the first search or not, we decide to replace. Now the first search will add a new entry, but every keystroke after that will replace the current entry. Instead of clicking back 7 times to remove the search, users only have to click back once.
+
+Forms Without Navigation
+
+So far all of our forms have changed the URL. While these user flows are common, it's equally common to want to submit a form without causing a navigation.
+
+For these cases, we have useFetcher. It allows us to communicate with actions and loaders without causing a navigation.
+
+The ★ button on the contact page makes sense for this. We aren't creating or deleting a new record, and we don't want to change pages. We simply want to change the data on the page we're looking at.
+
+👉 Change the <Favorite> form to a fetcher form
+
+import { Form, useFetcher } from "react-router";
+
+// existing imports & exports
+
+function Favorite({
+  contact,
+}: {
+  contact: Pick<ContactRecord, "favorite">;
+}) {
+  const fetcher = useFetcher();
+  const favorite = contact.favorite;
+
+  return (
+    <fetcher.Form method="post">
+      <button
+        aria-label={
+          favorite
+            ? "Remove from favorites"
+            : "Add to favorites"
+        }
+        name="favorite"
+        value={favorite ? "false" : "true"}
+      >
+        {favorite ? "★" : "☆"}
+      </button>
+    </fetcher.Form>
+  );
+}
+This form will no longer cause a navigation, but simply fetch to the action. Speaking of which ... this won't work until we create the action.
+
+👉 Create the action
+
+// existing imports
+import { getContact, updateContact } from "../data";
+// existing imports
+
+export async function action({
+  params,
+  request,
+}: Route.ActionArgs) {
+  const formData = await request.formData();
+  return updateContact(params.contactId, {
+    favorite: formData.get("favorite") === "true",
+  });
+}
+
+// existing code
+Alright, we're ready to click the star next to the user's name!
+
+
+Check that out, both stars automatically update. Our new <fetcher.Form method="post"> works almost exactly like the <Form> we've been using: it calls the action and then all data is revalidated automatically — even your errors will be caught the same way.
+
+There is one key difference though, it's not a navigation, so the URL doesn't change and the history stack is unaffected.
+
+Optimistic UI
+
+You probably noticed the app felt kind of unresponsive when we clicked the favorite button from the last section. Once again, we added some network latency because you're going to have it in the real world.
+
+To give the user some feedback, we could put the star into a loading state with fetcher.state (a lot like navigation.state from before), but we can do something even better this time. We can use a strategy called "Optimistic UI".
+
+The fetcher knows the FormData being submitted to the action, so it's available to you on fetcher.formData. We'll use that to immediately update the star's state, even though the network hasn't finished. If the update eventually fails, the UI will revert to the real data.
+
+👉 Read the optimistic value from fetcher.formData
+
+// existing code
+
+function Favorite({
+  contact,
+}: {
+  contact: Pick<ContactRecord, "favorite">;
+}) {
+  const fetcher = useFetcher();
+  const favorite = fetcher.formData
+    ? fetcher.formData.get("favorite") === "true"
+    : contact.favorite;
+
+  return (
+    <fetcher.Form method="post">
+      <button
+        aria-label={
+          favorite
+            ? "Remove from favorites"
+            : "Add to favorites"
+        }
+        name="favorite"
+        value={favorite ? "false" : "true"}
+      >
+        {favorite ? "★" : "☆"}
+      </button>
+    </fetcher.Form>
+  );
+}
+Now the star immediately changes to the new state when you click it.
+
+That's it! Thanks for giving React Router a shot. We hope this tutorial gives you a solid start to build great user experiences. There's a lot more you can do, so make sure to check out all the APIs 😀
+</DOCUMENTATION>

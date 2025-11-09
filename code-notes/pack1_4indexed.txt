@@ -1,0 +1,128 @@
+<pack_001.txt>
+1. (TV) 4 Day Work Week .txt
+2. (TV) Are Habits Important_.txt
+3. (TV) Can you find love on dating apps.txt
+4. (TV) Christmas Present Tense Verbs.txt
+5. (TV) Customer Service  (1).txt
+6. (TV) How to Avoid Boredom at Work.txt
+7. (TV) How to Deal with Problems at Work.txt
+8. (TV) How to Feel Happier at Work_ Convo Class.txt
+9. (TV) How to Grow a Business.txt
+10. (TV) How to Make Small Talk.txt
+11. (TV) How to Speak up in Business Meetings.txt
+12. (TV) Idioms_ Christmas .txt
+13. (TV) Is Content Creator a Real Job_ (1).txt
+14. (TV) Job Interview_ Conversation Class.txt
+15. (TV) Performance Review.txt
+16. (TV) Phrasal Verbs_ Halloween.txt
+17. (TV) Teamwork in Business.txt
+18. (TV) The 5 languages of Love .txt
+19. (TV) Valentine s Day.txt
+20. (TV) Video Conference Calls .txt
+21. (TV_ B1-B2) Active and Passive Voice (1).txt
+22. (TV_ B1-B2) Phrasal Verbs_ Work.txt
+23. (TV_ B2-C1) Collocations_ Family.txt
+24. (TV_ B2-C1) Collocations_ Relationships.txt
+25. (TV_ B2-C1) Collocations_ Sports.txt
+26. 1723642599-(TV) How to Speak up in Business Meetings (2).txt
+27. 1723642599-(TV) How to Speak up in Business Meetings (2)_1.txt
+28. 3PL b1 T.txt
+29. 3PL b2 T.txt
+30. 3PL c1 T.txt
+</pack_001.txt>
+<pack_002.txt>
+1. 5 ways to listen better_Customer service_Answer key.txt
+2. 5waystobuildawinningcompanyculture_lessonplan.txt
+3. 5waystobuildawinningcompanyculture_teacherguide.txt
+4. 6tipstoimproveyourwork-lifebalance_teacherguide.txt
+5. 9-Timeless-Strategies-to-Crush-Your-Next-Speech-or-Presentation-Inc.com_.txt
+6. A Tool That Makes Work Less Stressful.txt
+7. A-Restaurant-Role-play-Student.txt
+8. A-Restaurant-Role-play.txt
+9. A1-A2 Valentines Day memories TV.txt
+10. A2 B1 Comparatives TV.txt
+11. A2 Introduction to ecommerce Teachers.txt
+12. A2+ Finish the sentence (Conditionals 1,2,3).txt
+13. A2+ Finish the sentence (Conditionals 1,2,3)_1.txt
+14. A2-Using-the-Phone-Keys.txt
+15. A2B1 Describing a procedure_TV.txt
+16. A2B1 Marketing__TV.txt
+17. A2_Technology-skills-TV.txt
+18. ACTIVE LISTENING_INTER_TV.txt
+19. AI vs Loneliness ADVANCED_tv.txt
+20. AI vs Loneliness ELEMENTARY_TV.txt
+21. AI vs Loneliness INTERMEDIATE_TV.txt
+22. Active listening_ADV_TV.txt
+23. Adv_BusinessWriting_notes.txt
+24. Adv_U10_EmailStyle.txt
+25. Adv_U11_EmailsToAClient.txt
+26. Adv_U12_AFormalLetterOfAgreement.txt
+27. Adv_U1_CV.txt
+28. Adv_U2_MeetingMinutes.txt
+29. Adv_U3_ABusinessProposal.txt
+30. Adv_U4_AMailShot.txt
+</pack_002.txt>
+<pack_003.txt>
+1. Adv_U5_AdvertisingCopy.txt
+2. Adv_U6_AnInternalReport.txt
+3. Adv_U7_AFinancialReport.txt
+4. Adv_U8_ANewsletter.txt
+5. Adv_U9_AMissionStatement.txt
+6. All-about-Social-Media.txt
+7. Annoying-Corporate-Phrases.txt
+8. Applications of AI B2 T.txt
+9. Applications of AI C1C2 T.txt
+10. Articles_Life_B2.txt
+11. B1 B1+ Fulfillment and Logistics Teachers.txt
+12. B1 B1+ Legal issues in e-commerce Teachers.txt
+13. B1 B1+ Online Marketing I Teachers.txt
+14. B1 B1+ Online Marketing II Teachers.txt
+15. B1 B1+ Payments Teachers.txt
+16. B1 B1+ The basics of ecommerce Teachers.txt
+17. B1 B1+ World Wide Web Teacher's Version.txt
+18. B1 B2_Finance - Quick loans_TB.txt
+19. B1 Business Meetings Teachers.txt
+20. B1 Business Travel Teachers.txt
+21. B1 Business Travel Teachers_2.txt
+22. B1 Career advice_TV.txt
+23. B1 Company Meeting Teachers.txt
+24. B1 Comparing brands__TV.txt
+25. B1 Corporate Events Teachers.txt
+26. B1 Customer service and relationship management Teachers.txt
+27. B1 Ecommerce Teachers.txt
+28. B1 Ecommerce in emerging markets Teachers.txt
+29. B1 Ecommerce logistics Teachers.txt
+30. B1 Finance_TV.txt
+</pack_003.txt>
+<pack_004.txt>
+1. B1 Health and safety at a warehouse.txt
+2. B1 Journalism in the digital age Teachers.txt
+3. B1 Negotiations Teachers.txt
+4. B1 Omnichannel retailing Teachers.txt
+5. B1 Online Marketing Teachers.txt
+6. B1 Online marketing Teacher.txt
+7. B1 Online payments Teachers.txt
+8. B1 Order management Teachers.txt
+9. B1 Project management I Teachers.txt
+10. B1 Project management II Teachers.txt
+11. B1 Statistics and graphs__TV.txt
+12. B1 TV Emails.txt
+13. B1 TV Interview Mistakes.txt
+14. B1 Teamwork__TV.txt
+15. B1 Telephoning Teachers.txt
+16. B1 The art of interviewing Teachers.txt
+17. B1 To Send or Not to Send Teachers.txt
+18. B1 Travelling on Business Teachers.txt
+19. B1 Work and pay__TV.txt
+20. B1 Work words_TV.txt
+21. B1 Zoom Fatigue.txt
+22. B1(+)_SV_ Feedback.txt
+23. B1+ B2 Personality Idioms TV.txt
+24. B1+B2 Ratings Teachers.txt
+25. B1+B2 Socialising Teachers.txt
+26. B1+B2 Socialising Teachers_2.txt
+27. B1+B2B2+ Holiday shopping season Teachers.txt
+28. B1+Starting a business__TV.txt
+29. B1+_B2 Writing An Effective Business Email.txt
+30. B1+__Motivation at work_TB.txt
+</pack_004.txt>
