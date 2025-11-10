@@ -187,34 +187,23 @@ See `knowledge/concepts/task-queues-concepts.md` for details.
 - `knowledge/full/` - Detailed guides with code
 - `templates/` - Working examples
 
-## 🚀 Deployment
+## 🚀 Quick Start
 
-### Deploy This Framework to Your GitHub
+This framework is ready to use! Open it in Claude Code and say:
 
-**Quick Deploy (Non-Interactive):**
-
-```bash
-# 1. Rename the directory to your desired repo name:
-mv agent-repo-framework agent-engineer
-
-# 2. Go inside and deploy:
-cd agent-engineer
-./deploy.sh
-
-# Done! Creates private repo with folder name
+```
+"Hello, I want to build a custom Claude Code repository"
 ```
 
-**Interactive Deploy (Choose Options):**
+Claude will:
+1. Read all knowledge files (you don't see this)
+2. Ask discovery questions about your needs
+3. Recommend appropriate templates or patterns
+4. Guide you through building your custom repository
 
-```bash
-# From inside agent-repo-framework directory:
-./deploy_framework.sh
-# Follow prompts for repo name and visibility
-```
+### Using Templates
 
-Both create a fresh GitHub repository with the complete framework.
-
-### Using a Template
+Deploy a pre-built template:
 
 ```bash
 cd templates/goal-tracker
