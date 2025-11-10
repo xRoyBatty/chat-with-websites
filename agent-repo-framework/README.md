@@ -259,6 +259,17 @@ You don't need to be an expert to build powerful AI-assisted systems. This frame
 3. Study examples in `plan-generation/examples/`
 4. Reference full guides for implementation details
 
+## 🔍 Framework Origins
+
+This framework was extracted and generalized from a working VPS multi-agent coordination system. The knowledge, patterns, and templates are based on real implementations and research into multi-agent systems, Claude Code best practices, and file-based coordination architectures.
+
+**Source Material:**
+- VPS multi-agent system implementation (parent repository)
+- Claude Code consultation patterns
+- Real-world template usage
+
+See `CLAUDE.md` section "Framework Origins & Source Material" for complete details.
+
 ## 📄 License
 
 This is a research framework. Use freely for your projects.

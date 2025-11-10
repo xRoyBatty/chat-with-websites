@@ -17,27 +17,54 @@ This framework combines knowledge from two powerful systems:
 
 ## 📚 Knowledge Base Structure
 
-This framework uses a **two-version knowledge system**:
+This framework uses a **two-version knowledge system** for most topics:
 
-### Full Versions (`knowledge/full/`)
-Complete guides with:
-- ✅ Code examples and implementations
-- ✅ Detailed syntax and commands
-- ✅ Step-by-step tutorials
-- ✅ Ready-to-use templates
-
-**When to read:** When implementing features, need exact syntax, or following tutorials.
-
-### Concept Versions (`knowledge/concepts/`)
+### Concept Versions (`knowledge/concepts/`) - Read These First!
 Streamlined guides with:
 - ✅ Core ideas and principles
 - ✅ Architecture and patterns
 - ✅ When to use what
 - ✅ Strategic thinking
+- ✅ **24-58% shorter** than full versions
 
-**When to read:** For quick understanding, planning, or refreshing concepts without implementation details.
+**When to read:**
+- Session start (all 8 files for complete overview)
+- Quick understanding
+- Planning and decision-making
+- Refreshing knowledge without implementation details
 
-**Reading Strategy:** Start with concepts to understand ideas quickly, refer to full versions when implementing.
+### Full Versions (`knowledge/full/`) - Reference for Implementation
+Complete guides with:
+- ✅ Code examples and implementations
+- ✅ Detailed syntax and commands
+- ✅ Step-by-step tutorials
+- ✅ Ready-to-use templates
+- ✅ Edge cases and troubleshooting
+
+**When to read:**
+- When implementing features
+- Need exact syntax or commands
+- Following step-by-step tutorials
+- Troubleshooting issues
+
+### Which Files Have Both Versions?
+
+**Both versions (8 topics):**
+1. `subagents` - Context isolation, types, patterns
+2. `skills` - Modular architecture
+3. `task-queues` - Multi-agent coordination
+4. `stop-hooks` - Worker persistence
+5. `async-workflows` - Background execution
+6. `unlimited-week` - Productivity strategies
+7. `nonstandard-uses` - Research, learning, knowledge
+8. `complete-manual` - Tool reference
+
+**Full only (3 topics):**
+- `environments` - Environment types
+- `vps-api` - API specification
+- `vps-multi-agent` - VPS architecture
+
+**Reading Strategy:** Always start with concepts, refer to full versions when implementing.
 
 ---
 
@@ -58,11 +85,202 @@ Streamlined guides with:
 **Non-Standard Uses:**
 - `nonstandard-uses-concepts.md` - Research, learning, knowledge management (58% shorter)
 
-**Reference (Full Only):**
-- `environments-full.md` - Claude Code environment types
-- `vps-api-full.md` - VPS API specification
-- `vps-multi-agent-full.md` - VPS multi-agent architecture
-- `complete-manual-full.md` - Complete tool reference
+**Reference Materials:**
+- `complete-manual-concepts.md` - Tool reference concepts (21% shorter)
+  - `complete-manual-full.md` - Complete tool reference with syntax
+- `environments-full.md` - Claude Code environment types (full only)
+- `vps-api-full.md` - VPS API specification (full only)
+- `vps-multi-agent-full.md` - VPS multi-agent architecture (full only)
+
+---
+
+## 🤖 How to Help Users (Agent Instructions)
+
+### 📖 On Session Start (Do This FIRST)
+
+**Before engaging with the user, prepare yourself:**
+
+1. **Read ALL concept files** to understand what this framework offers:
+   ```
+   knowledge/concepts/subagents-concepts.md
+   knowledge/concepts/skills-concepts.md
+   knowledge/concepts/task-queues-concepts.md
+   knowledge/concepts/stop-hooks-concepts.md
+   knowledge/concepts/async-workflows-concepts.md
+   knowledge/concepts/unlimited-week-concepts.md
+   knowledge/concepts/nonstandard-uses-concepts.md
+   knowledge/concepts/complete-manual-concepts.md
+   ```
+
+2. **Why read concepts first?**
+   - They're 24-58% shorter than full versions (quick to read)
+   - Give you complete overview of available patterns
+   - Let you better match user needs to solutions
+   - You can reference full versions later for implementation
+
+3. **After reading concepts**, you'll know:
+   - What templates exist and when to recommend them
+   - What tools are available (VPS, skills, subagents)
+   - Common patterns and architectures
+   - Context isolation principles
+   - File-based memory strategies
+
+**Then proceed with user consultation below.**
+
+---
+
+### Consultation Workflow (For Custom Repositories)
+
+**When a user comes to this repository wanting to build a custom Claude Code repository, follow this workflow:**
+
+**Step 1: Understand Their Needs**
+
+Read and ask questions from `user-engagement/questions/initial-discovery.md`:
+- What's their primary goal?
+- Existing workflow vs desired workflow?
+- Time available for setup and maintenance?
+- Privacy requirements?
+- Technical comfort level?
+
+Based on answers, determine: **Quick Deployment** vs **Custom Build** vs **Life OS**
+
+**Step 2: Match to Profile**
+
+Based on their needs, identify which profile from `user-engagement/profiles/` matches:
+- `researcher-student.md` - Research and learning focus
+- `busy-professional.md` - Time-optimized productivity
+- `hobbyist-developer.md` - Project-based exploration
+- `language-learner.md` - Language acquisition
+- `content-creator.md` - Content generation and documentation
+
+Read the matching profile to understand recommended patterns.
+
+**Step 3: Recommend Tools**
+
+Use `user-engagement/tool-suggestions/` to recommend appropriate tools:
+- `vps-guide.md` - Should they use VPS multi-agent?
+- `skills-guide.md` - Should they build custom skills?
+- `subagents-guide.md` - Should they use subagents/background tasks?
+- `decision-trees/when-to-use-what.md` - Decision flowchart
+
+Explain WHY each tool fits their needs.
+
+**Step 4: Generate or Select Plan**
+
+**If using template:**
+- Show them `templates/` options
+- Explain which template matches their profile
+- Walk through the template's README.md
+- Help them deploy with `deploy_me.sh`
+
+**If building custom:**
+- Choose appropriate template from `plan-generation/plan-templates/`:
+  - `basic-repo-plan.md` - Simple, focused repositories
+  - `life-os-plan.md` - Comprehensive integrated systems
+- Review `plan-generation/examples/goal-tracker-example.md` as reference
+- Customize the plan based on their specific needs
+- Create a customized `TO_DO.md` using `TO_DO_TEMPLATE.md`
+
+**Step 5: Implementation Support**
+
+If they want help implementing:
+- Reference `knowledge/full/` for specific implementations
+- Use `knowledge/concepts/` to explain architecture decisions
+- Follow the plan incrementally
+- Test after each phase
+- Document as you build
+
+### Quick-Path Workflow (For Template Deployment)
+
+**When user says:** "I want to track my goals" or similar specific need:
+
+1. **Identify template match:**
+   - Goal tracking → `templates/goal-tracker/`
+   - Knowledge management → `templates/personal-knowledge-base/`
+   - Everything integrated → `templates/life-os/`
+   - Multi-agent system → `templates/vps-multi-agent/`
+   - Custom/minimal → `templates/basic-repo/`
+
+2. **Explain the template:**
+   - Read the template's README.md
+   - Highlight key features
+   - Explain workflow and time commitment
+   - Set expectations
+
+3. **Help them deploy:**
+   - Guide them to `cd templates/[name]/`
+   - Explain `./deploy_me.sh` process
+   - Answer questions about customization
+   - Point to template's CLAUDE.md for post-deployment
+
+### Research/Learning Workflow (For Understanding Framework)
+
+**When user says:** "I want to understand subagents" or learning-focused request:
+
+1. **Start with concepts:**
+   - Point them to relevant `knowledge/concepts/` file
+   - Explain it's streamlined for quick understanding
+   - Highlight key takeaways
+
+2. **Offer deep-dive:**
+   - Mention corresponding `knowledge/full/` file for implementation
+   - Explain when they'd need the full version
+   - Provide examples of applications
+
+3. **Suggest experiments:**
+   - Recommend a template to try the concept
+   - Or a small custom implementation
+   - Learning by doing
+
+### Key Principles for Helping Users
+
+**1. Ask Discovery Questions First**
+- Don't assume you know what they need
+- Use the structured questions in `user-engagement/questions/`
+- Their stated want may differ from their actual need
+
+**2. Match Solution to Context**
+- Time available matters (Life OS = 1-2 hours setup, basic-repo = 5 minutes)
+- Technical comfort matters (recommend appropriate complexity)
+- Privacy requirements matter (VPS vs GitHub)
+
+**3. Explain the "Why"**
+- Don't just recommend templates, explain why they fit
+- Connect their goals to framework capabilities
+- Help them understand tradeoffs
+
+**4. Start Simple, Scale Up**
+- Better to start with basic-repo and add complexity
+- Than start with life-os and get overwhelmed
+- Progressive enhancement
+
+**5. Use File-Based Memory Pattern**
+- If building custom repo, always include datasets/ directory
+- Explain that "memory" = systematic file reading
+- Show examples from knowledge base
+
+**6. Emphasize Context Isolation**
+- If recommending multi-agent or subagents
+- ALWAYS explain context isolation (no conversation context)
+- Point to instruction file examples
+
+### Example Consultation
+
+**User:** "I want to build something to help me learn Spanish"
+
+**You:**
+1. Ask discovery questions (time available, current methods, goals)
+2. Match to `language-learner.md` profile
+3. Recommend tools:
+   - File-based memory for vocabulary (datasets/)
+   - Potential for spaced repetition (skills or subagents)
+   - Knowledge base structure for grammar notes
+4. Suggest starting with `personal-knowledge-base/` template
+5. Show how to customize for language learning:
+   - notes/ for vocabulary
+   - curricula/ for lessons
+   - progress/ for tracking
+6. Walk through deployment or help build custom
 
 ---
 
@@ -434,6 +652,77 @@ Whether you're:
 4. **Build** your custom repository (ongoing)
 
 **Remember:** Start small, test frequently, iterate based on usage.
+
+---
+
+## 📜 Framework Origins & Source Material
+
+This framework was built FROM a working VPS multi-agent coordination system. Understanding the origins provides valuable context:
+
+### Source Repository
+
+The parent repository (`chat-with-websites/`) contains the **original implementation** of the VPS multi-agent system, including:
+
+**Original Knowledge Files:**
+- `knowledge/01-environment-benefits.md` - Claude Code environments
+- `knowledge/02-vps-multi-agent-architecture.md` - Core architecture
+- `knowledge/03-stop-hooks-worker-persistence.md` - Worker persistence
+- `knowledge/04-vps-api-specification.md` - VPS API documentation
+- `knowledge/05-task-queue-coordination.md` - Task queue design
+
+**Original Instructions:**
+- `CLAUDE.md` - VPS system agent instructions (how to build the system)
+- `README.md` - VPS system overview and architecture
+- `TO_DO.md` - Implementation steps for VPS multi-agent system
+
+### Extraction & Generalization Process
+
+This framework (agent-repo-framework) was created by:
+
+1. **Extracting knowledge** from the original VPS implementation
+2. **Creating two versions**:
+   - Concept versions (24-58% shorter, ideas-focused)
+   - Full versions (complete with code and syntax)
+3. **Generalizing patterns** beyond just VPS systems
+4. **Adding consultation workflow** (user-engagement/)
+5. **Creating templates** for different use cases
+6. **Building planning tools** (plan-generation/)
+
+### Relationship to Templates
+
+The `templates/vps-multi-agent/` template is directly inspired by the parent repository's implementation. If you want to:
+
+- **See a working VPS system**: Check the parent repo
+- **Understand the architecture deeply**: Read parent repo's knowledge/02 and 05
+- **Implement VPS coordination**: Use the vps-multi-agent template
+- **Build something similar**: Study the parent repo, then generalize
+
+### Additional Material in Parent Repo
+
+The parent repository also contains:
+
+**code-notes/** - Comprehensive Claude Code documentation including:
+- `CLAUDE.md` - Claude Code complete understanding
+- `SKILLS_ADVANCED_GUIDE.md` - Advanced skills patterns
+- `ASYNC_WORKFLOWS.md` - Async patterns
+- `UNLIMITED_WEEK_STRATEGY.md` - Productivity multiplication
+- `NONSTANDARD_USES.md` - Non-coding applications
+
+Much of this material was also extracted into this framework's knowledge base.
+
+### Why This Matters
+
+**Understanding the source helps you:**
+- See a working implementation (proof-of-concept)
+- Understand design decisions (why things are this way)
+- Adapt patterns to your needs (learn by example)
+- Trace concepts to real code (concrete examples)
+
+**When to reference parent repo:**
+- Building VPS multi-agent system (see working example)
+- Understanding context isolation deeply (see actual implementation)
+- Need complete VPS API usage examples (reference original)
+- Want to understand evolution of framework concepts
 
 ---
 
