@@ -189,6 +189,18 @@ See `knowledge/concepts/task-queues-concepts.md` for details.
 
 ## 🚀 Deployment
 
+### Deploy This Framework to Your GitHub
+
+If you want to create your own copy of this framework:
+
+```bash
+# From inside agent-repo-framework directory:
+./deploy_framework.sh
+# Follow prompts to create new GitHub repo
+```
+
+This creates a fresh GitHub repository with the complete framework.
+
 ### Using a Template
 
 ```bash
