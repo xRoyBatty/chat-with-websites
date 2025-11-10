@@ -21,64 +21,17 @@ For multi-agent systems, we need workers to **stay alive and keep polling** for 
 2. **Provide feedback** - Tell Claude why it must continue
 3. **Set conditions** - Allow stoppage only when certain criteria met
 
-## ⚠️ CRITICAL: Understanding Worker Execution Model
-
-**WRONG MENTAL MODEL:**
-```python
-# Workers DO NOT run as continuous background scripts
-while True:  # ❌ This does NOT happen
-    check_queue()
-    execute_task()
-    time.sleep(30)
-```
-
-**CORRECT MENTAL MODEL:**
-```
-Worker operates in DISCRETE CONVERSATION CYCLES:
-
-Cycle 1: Worker checks queue → No tasks → Tries to stop
-         ↓
-      Stop hook blocks: "Keep waiting (9 min remaining)"
-         ↓
-      Worker continues
-
-Cycle 2: Worker checks queue → Claims task → Executes → Completes
-         ↓
-      Tries to stop
-         ↓
-      Stop hook blocks: "Keep waiting (10 min remaining)" [idle timer RESET]
-         ↓
-      Worker continues
-
-Cycle 3: Worker checks queue → No tasks → Tries to stop
-         ↓
-      Stop hook blocks: "Keep waiting (8 min remaining)"
-         ↓
-      Worker continues
-
-...
-
-Cycle N: Worker checks queue → No tasks → Tries to stop
-         ↓
-      Stop hook approves: "Idle for 10 minutes - shutdown"
-         ↓
-      Worker stops gracefully
-```
-
-**Key insight:** Each "check queue → do work → try to stop" is ONE discrete conversation cycle. The stop hook creates the polling behavior by repeatedly blocking the natural stop attempt.
-
 ## How Stop Hooks Work
 
 ### Hook Execution Flow
 
 ```
-1. Claude finishes a task (or finds no tasks)
+1. Claude finishes a task
 2. Claude thinks: "I'm done, time to stop"
 3. Stop hook is triggered BEFORE stopping
 4. Hook evaluates: Should we stop or continue?
 5a. Hook returns "approve" → Claude stops gracefully
 5b. Hook returns "block" + reason → Claude continues with new instructions
-6. Cycle repeats from step 1
 ```
 
 ### Hook Configuration
@@ -179,35 +132,23 @@ else:
 
 ```
 12:00 PM - Worker registers (idle_time = 0)
-           Cycle 1: No tasks → Stop hook blocks
-
 12:01 PM - Still idle (idle_time = 1 min)
-           Cycle 2: No tasks → Stop hook blocks
-
 12:02 PM - Still idle (idle_time = 2 min)
-           Cycle 3: No tasks → Stop hook blocks
 ...
 12:09 PM - Task arrives! Worker claims it
-           Cycle N: Claims task → Executes
-           → last_task_claimed = 12:09 PM
-           → idle_time RESETS to 0
-
+          → last_task_claimed = 12:09 PM
+          → idle_time RESETS to 0
 12:10 PM - Working on task (idle_time = 0, not idle)
-
 12:39 PM - Task complete
-           → last_task_completed = 12:39 PM
-           → idle_time RESETS to 0 again
-           → Tries to stop → Stop hook blocks
-
+          → last_task_completed = 12:39 PM
+          → idle_time RESETS to 0 again
 12:40 PM - No tasks (idle_time = 1 min)
-           Cycle N+1: No tasks → Stop hook blocks
-
 12:41 PM - No tasks (idle_time = 2 min)
-           Cycle N+2: No tasks → Stop hook blocks
 ...
 12:49 PM - No tasks (idle_time = 10 min)
-           Cycle N+10: No tasks → Stop hook APPROVES
-           → Worker shuts down gracefully
+          → Idle limit reached
+          → Hook returns "approve"
+          → Worker shuts down gracefully
 ```
 
 ## VPS Helper Functions
@@ -289,90 +230,41 @@ def complete_task(task_id, worker_id, result=None):
     })
 ```
 
-## Worker Cycle Pattern
+## Worker Main Loop
 
-Instead of a continuous loop, workers operate in discrete cycles:
+Worker agents should run a continuous loop:
 
-### Worker CLAUDE.md Instructions
+```python
+import time
+from vps_deploy_helper import *
 
-```markdown
-# Worker Agent Instructions
+# Register
+WORKER_ID = os.environ.get('WORKER_ID', 'worker-1')
+register_worker(WORKER_ID, capabilities=['backend'])
 
-Your role: Poll the VPS task queue and execute available tasks.
+# Main loop
+while True:
+    # Send heartbeat
+    heartbeat(WORKER_ID)
 
-## On Each Conversation Cycle:
+    # Try to claim task
+    task = claim_task(WORKER_ID)
 
-1. **Send heartbeat**
-   - Use `heartbeat(WORKER_ID)` to update your last-seen time
-   - This helps coordinator know you're alive
+    if task:
+        print(f"📋 Working on: {task['description']}")
 
-2. **Check for tasks**
-   - Use `claim_task(WORKER_ID)` to get next task
-   - If no task: Report "No tasks available" and FINISH
-   - If task found: Proceed to step 3
+        # DO THE ACTUAL WORK HERE
+        result = execute_task(task)
 
-3. **Execute task** (if claimed)
-   - Read the task's instruction file from VPS
-   - Read any referenced context files
-   - Execute the task requirements
-   - Save results to VPS
+        # Mark complete
+        complete_task(task['id'], WORKER_ID, result)
+        print(f"✅ Completed task {task['id']}")
+    else:
+        print("⏳ No tasks, waiting...")
+        time.sleep(30)  # Wait before checking again
 
-4. **Mark complete**
-   - Use `complete_task(task_id, WORKER_ID, result_data)`
-   - Report completion
-
-5. **Finish cycle**
-   - Say "Cycle complete"
-   - Session will try to stop
-   - Stop hook will either block (keep going) or approve (shutdown)
-
-## Critical Understanding:
-
-You are NOT running a continuous script. Each time you execute steps 1-5 above,
-that is ONE conversation cycle. The stop hook creates persistence by blocking
-your natural tendency to stop after each cycle.
-
-When you say "Cycle complete", you will either:
-- Be blocked by stop hook → Start steps 1-5 again in NEW conversation cycle
-- Be approved by stop hook → Shutdown gracefully (idle timeout reached)
-```
-
-### Example Worker Workflow
-
-**Cycle 1:**
-```
-Worker: Sending heartbeat...
-Worker: Checking for tasks...
-Worker: No tasks available. Cycle complete.
-[Tries to stop]
-Stop Hook: "BLOCK - Waiting for tasks (10 min remaining)"
-[New cycle starts]
-```
-
-**Cycle 2:**
-```
-Worker: Sending heartbeat...
-Worker: Checking for tasks...
-Worker: Claimed task #1234: "Create user model"
-Worker: Reading instruction file: tasks/task-1234.md
-Worker: Reading context: project-spec.md, database-schema.md
-Worker: Creating user model...
-Worker: [executes work]
-Worker: Task complete! Marking as done.
-Worker: Cycle complete.
-[Tries to stop]
-Stop Hook: "BLOCK - Waiting for tasks (10 min remaining)" [timer reset]
-[New cycle starts]
-```
-
-**Cycle N (timeout):**
-```
-Worker: Sending heartbeat...
-Worker: Checking for tasks...
-Worker: No tasks available. Cycle complete.
-[Tries to stop]
-Stop Hook: "APPROVE - Idle for 10 minutes, shutting down"
-[Worker stops gracefully]
+# Note: Loop never ends naturally
+# Stop hook will eventually allow shutdown after idle timeout
 ```
 
 ## Configurable Timeouts
@@ -386,8 +278,8 @@ should_worker_continue(WORKER_ID, max_idle_minutes=30)
 # Temporary worker - shuts down after 5 minutes idle
 should_worker_continue(WORKER_ID, max_idle_minutes=5)
 
-# Persistent worker - very long timeout (max recommended for web: 60 min)
-should_worker_continue(WORKER_ID, max_idle_minutes=60)
+# Persistent worker - never times out (not recommended for web)
+should_worker_continue(WORKER_ID, max_idle_minutes=None)
 ```
 
 ## Stop Hook JSON Output
@@ -441,12 +333,12 @@ def get_active_workers():
 
 Stop hooks enable persistent worker agents by:
 
-1. ✅ **Intercepting stop attempts** - After each discrete conversation cycle
+1. ✅ **Intercepting stop attempts** - Before Claude can exit
 2. ✅ **Checking conditions** - Are there tasks? How long idle?
-3. ✅ **Blocking stoppage** - Force continuation with feedback, creating polling behavior
+3. ✅ **Blocking stoppage** - Force continuation with feedback
 4. ✅ **Graceful shutdown** - Allow exit after reasonable timeout
 5. ✅ **Idle time management** - Only count time between tasks, not total time
 
-This creates a **polling worker pattern** where agents operate in discrete cycles, the stop hook creates persistence by repeatedly blocking the natural stop attempt, and workers gracefully shutdown when truly idle.
+This creates a **polling worker pattern** where agents continuously monitor for work, stay alive while needed, and gracefully shutdown when truly idle.
 
-**Key insight:** The 10-minute timeout is **idle time only** (time waiting for work), NOT total runtime. Workers can run for hours as long as they keep getting tasks. Each "check → work → complete" is ONE conversation cycle, and the stop hook creates the continuous polling behavior by blocking after each cycle.
+**Key insight:** The 10-minute timeout is **idle time only** (time waiting for work), NOT total runtime. Workers can run for hours as long as they keep getting tasks.

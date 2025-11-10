@@ -119,19 +119,6 @@ Session 3 (Agent 3) → VPS at /var/www/.../myproject/ (SAME location!)
 
 ## Multi-Agent Patterns
 
-**⚠️ CRITICAL: Context Isolation**
-
-All patterns below rely on file-based coordination. Workers have ZERO conversation context.
-
-Every task must include:
-- Instruction file with complete, self-contained requirements
-- List of context files to read
-- All necessary background information
-
-Workers execute based ONLY on file content, not conversation history.
-
----
-
 ### Pattern 1: Division of Labor (Parallel)
 
 ```
@@ -178,76 +165,6 @@ Workers 1-4:
   - Mark complete
   - Repeat until queue empty
 ```
-
-**Context Isolation Consideration:**
-
-Workers cannot access conversation history. The coordinator must create complete instruction files.
-
-**WRONG (assumes conversation context):**
-```json
-{
-  "id": 1,
-  "description": "Implement the auth endpoint we discussed",
-  "assigned_to": "worker-backend"
-}
-```
-Worker sees this and has NO IDEA what "we discussed" means.
-
-**CORRECT (file-based with instruction file):**
-
-1. Coordinator creates instruction file:
-```markdown
-File: tasks/task-1-auth-endpoint.md
-
-# Task: Implement Authentication Endpoint
-
-## Objective
-Create POST /api/auth/login endpoint for user authentication
-
-## Requirements
-- Accept username + password in JSON body
-- Validate credentials against User model
-- Return JWT token on success
-- Return 401 on invalid credentials
-
-## Context Files
-Read these first:
-- docs/api-spec.md (API design standards)
-- src/models/user.py (User model with password verification)
-- src/auth/jwt_helper.py (JWT token generation)
-
-## Implementation Steps
-1. Create route in src/api/auth.py
-2. Parse JSON body (username, password)
-3. Query User model for username
-4. Verify password using user.verify_password()
-5. Generate JWT using jwt_helper.create_token()
-6. Return JSON: {"token": "...", "user_id": 123}
-
-## Acceptance Criteria
-- [ ] Endpoint responds to POST /api/auth/login
-- [ ] Valid credentials return JWT token
-- [ ] Invalid credentials return 401 status
-- [ ] Follows API standards from docs/api-spec.md
-```
-
-2. Coordinator adds to queue:
-```json
-{
-  "id": 1,
-  "description": "Implement authentication endpoint",
-  "instruction_file": "tasks/task-1-auth-endpoint.md",
-  "context_files": [
-    "docs/api-spec.md",
-    "src/models/user.py",
-    "src/auth/jwt_helper.py"
-  ],
-  "assigned_to": "worker-backend",
-  "status": "pending"
-}
-```
-
-Now the worker has everything it needs in files - no conversation context required.
 
 ## Communication Mechanisms
 
