@@ -274,14 +274,99 @@ response = requests.get(
 print(f"Auth works: {response.status_code == 200}")
 ```
 
+## Common Operations via Execute Command
+
+The API doesn't have dedicated endpoints for all operations, but you can use `/execute` for many tasks:
+
+### Reading Files
+
+**Read text file:**
+```python
+result = execute_command('cat "config.py"')
+if result['returncode'] == 0:
+    content = result['stdout']
+else:
+    print(f"Error: {result['stderr']}")
+```
+
+**Read binary file (base64 encoded):**
+```python
+result = execute_command('base64 "image.png"')
+if result['returncode'] == 0:
+    import base64
+    binary_content = base64.b64decode(result['stdout'])
+```
+
+### Checking File Existence
+
+```python
+result = execute_command('test -f "myfile.txt" && echo "exists" || echo "not_found"')
+file_exists = 'exists' in result.get('stdout', '')
+```
+
+### Download via HTTP
+
+Files in BASE_DIR are web-accessible:
+
+```python
+import requests
+
+# VPS file: /var/www/.../httpdocs/data.json
+# Web URL: http://schoolfands.eu/data.json
+
+response = requests.get('http://schoolfands.eu/data.json')
+if response.status_code == 200:
+    content = response.text
+```
+
+### Other Useful Commands
+
+**Delete file:**
+```python
+execute_command('rm "file.txt"')
+```
+
+**Delete directory:**
+```python
+execute_command('rm -rf "mydir/"')
+```
+
+**Create directory:**
+```python
+execute_command('mkdir -p "path/to/dir"')
+```
+
+**Move/rename:**
+```python
+execute_command('mv "old.txt" "new.txt"')
+```
+
+**Copy:**
+```python
+execute_command('cp "source.txt" "dest.txt"')
+```
+
+**Search for text:**
+```python
+result = execute_command('grep "pattern" "file.txt"')
+matches = result['stdout']
+```
+
+**List with details:**
+```python
+result = execute_command('ls -lah')
+listing = result['stdout']
+```
+
 ## Limitations
 
 1. **No streaming**: File operations are synchronous
-2. **No file download**: API only supports deployment and listing, not retrieval
+2. **No file download endpoint**: API only supports deployment and listing
    - Use `execute_command('cat file.txt')` to read files
-3. **No directory deletion**: Use `execute_command('rm -rf dir/')`
+   - Or use HTTP download for web-accessible files
+3. **No directory deletion endpoint**: Use `execute_command('rm -rf dir/')`
 4. **No file metadata**: Limited info from list endpoint
-5. **Binary files**: Encoding must be specified (default: utf-8)
+5. **Binary files**: Use base64 encoding via execute command
 
 ## Performance
 
