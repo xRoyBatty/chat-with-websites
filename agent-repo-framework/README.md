@@ -191,15 +191,28 @@ See `knowledge/concepts/task-queues-concepts.md` for details.
 
 ### Deploy This Framework to Your GitHub
 
-If you want to create your own copy of this framework:
+**Quick Deploy (Non-Interactive):**
+
+```bash
+# 1. Rename the directory to your desired repo name:
+mv agent-repo-framework agent-engineer
+
+# 2. Go inside and deploy:
+cd agent-engineer
+./deploy.sh
+
+# Done! Creates private repo with folder name
+```
+
+**Interactive Deploy (Choose Options):**
 
 ```bash
 # From inside agent-repo-framework directory:
 ./deploy_framework.sh
-# Follow prompts to create new GitHub repo
+# Follow prompts for repo name and visibility
 ```
 
-This creates a fresh GitHub repository with the complete framework.
+Both create a fresh GitHub repository with the complete framework.
 
 ### Using a Template
 
