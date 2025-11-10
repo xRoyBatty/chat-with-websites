@@ -17,27 +17,54 @@ This framework combines knowledge from two powerful systems:
 
 ## 📚 Knowledge Base Structure
 
-This framework uses a **two-version knowledge system**:
+This framework uses a **two-version knowledge system** for most topics:
 
-### Full Versions (`knowledge/full/`)
-Complete guides with:
-- ✅ Code examples and implementations
-- ✅ Detailed syntax and commands
-- ✅ Step-by-step tutorials
-- ✅ Ready-to-use templates
-
-**When to read:** When implementing features, need exact syntax, or following tutorials.
-
-### Concept Versions (`knowledge/concepts/`)
+### Concept Versions (`knowledge/concepts/`) - Read These First!
 Streamlined guides with:
 - ✅ Core ideas and principles
 - ✅ Architecture and patterns
 - ✅ When to use what
 - ✅ Strategic thinking
+- ✅ **24-58% shorter** than full versions
 
-**When to read:** For quick understanding, planning, or refreshing concepts without implementation details.
+**When to read:**
+- Session start (all 8 files for complete overview)
+- Quick understanding
+- Planning and decision-making
+- Refreshing knowledge without implementation details
 
-**Reading Strategy:** Start with concepts to understand ideas quickly, refer to full versions when implementing.
+### Full Versions (`knowledge/full/`) - Reference for Implementation
+Complete guides with:
+- ✅ Code examples and implementations
+- ✅ Detailed syntax and commands
+- ✅ Step-by-step tutorials
+- ✅ Ready-to-use templates
+- ✅ Edge cases and troubleshooting
+
+**When to read:**
+- When implementing features
+- Need exact syntax or commands
+- Following step-by-step tutorials
+- Troubleshooting issues
+
+### Which Files Have Both Versions?
+
+**Both versions (8 topics):**
+1. `subagents` - Context isolation, types, patterns
+2. `skills` - Modular architecture
+3. `task-queues` - Multi-agent coordination
+4. `stop-hooks` - Worker persistence
+5. `async-workflows` - Background execution
+6. `unlimited-week` - Productivity strategies
+7. `nonstandard-uses` - Research, learning, knowledge
+8. `complete-manual` - Tool reference
+
+**Full only (3 topics):**
+- `environments` - Environment types
+- `vps-api` - API specification
+- `vps-multi-agent` - VPS architecture
+
+**Reading Strategy:** Always start with concepts, refer to full versions when implementing.
 
 ---
 
@@ -58,19 +85,53 @@ Streamlined guides with:
 **Non-Standard Uses:**
 - `nonstandard-uses-concepts.md` - Research, learning, knowledge management (58% shorter)
 
-**Reference (Full Only):**
-- `environments-full.md` - Claude Code environment types
-- `vps-api-full.md` - VPS API specification
-- `vps-multi-agent-full.md` - VPS multi-agent architecture
-- `complete-manual-full.md` - Complete tool reference
+**Reference Materials:**
+- `complete-manual-concepts.md` - Tool reference concepts (21% shorter)
+  - `complete-manual-full.md` - Complete tool reference with syntax
+- `environments-full.md` - Claude Code environment types (full only)
+- `vps-api-full.md` - VPS API specification (full only)
+- `vps-multi-agent-full.md` - VPS multi-agent architecture (full only)
 
 ---
 
 ## 🤖 How to Help Users (Agent Instructions)
 
-**When a user comes to this repository wanting to build a custom Claude Code repository, follow this workflow:**
+### 📖 On Session Start (Do This FIRST)
+
+**Before engaging with the user, prepare yourself:**
+
+1. **Read ALL concept files** to understand what this framework offers:
+   ```
+   knowledge/concepts/subagents-concepts.md
+   knowledge/concepts/skills-concepts.md
+   knowledge/concepts/task-queues-concepts.md
+   knowledge/concepts/stop-hooks-concepts.md
+   knowledge/concepts/async-workflows-concepts.md
+   knowledge/concepts/unlimited-week-concepts.md
+   knowledge/concepts/nonstandard-uses-concepts.md
+   knowledge/concepts/complete-manual-concepts.md
+   ```
+
+2. **Why read concepts first?**
+   - They're 24-58% shorter than full versions (quick to read)
+   - Give you complete overview of available patterns
+   - Let you better match user needs to solutions
+   - You can reference full versions later for implementation
+
+3. **After reading concepts**, you'll know:
+   - What templates exist and when to recommend them
+   - What tools are available (VPS, skills, subagents)
+   - Common patterns and architectures
+   - Context isolation principles
+   - File-based memory strategies
+
+**Then proceed with user consultation below.**
+
+---
 
 ### Consultation Workflow (For Custom Repositories)
+
+**When a user comes to this repository wanting to build a custom Claude Code repository, follow this workflow:**
 
 **Step 1: Understand Their Needs**
 
