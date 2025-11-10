@@ -126,6 +126,26 @@ This creates polling behavior without actual continuous loops.
 - Sufficient resources for your codebase
 - Stable network connection
 
+### VPS API Knowledge (REQUIRED)
+
+**⚠️ You cannot use this template without understanding the VPS API.**
+
+Before deploying, you MUST read:
+- **`../../knowledge/full/vps-api-full.md`** - Complete API specification
+  - Endpoints: /test, /list, /deploy, /execute
+  - Authentication with X-API-Key header
+  - Path handling (CRITICAL: you're already IN base directory)
+  - Example requests and responses
+  - Common mistakes to avoid
+
+The template includes a basic VPS API client (`tools/vps-api-client.py`), but you'll need the full documentation to:
+- Understand how to interact with VPS
+- Build custom coordination functions
+- Debug issues
+- Extend the system
+
+**See also:** Parent repository's comprehensive helper script for advanced patterns.
+
 ### Environment Setup
 - Claude Code environment configured with VPS_API_KEY
 - Network access enabled

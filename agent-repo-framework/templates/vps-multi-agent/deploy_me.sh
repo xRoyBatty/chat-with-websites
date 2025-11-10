@@ -250,6 +250,11 @@ When tasks complete:
 
 ## VPS API Usage
 
+**IMPORTANT:** Read the VPS API documentation in the framework:
+- `agent-repo-framework/knowledge/full/vps-api-full.md` - Complete API specification
+
+This explains endpoints, authentication, path handling, and common mistakes.
+
 Use the VPS skill for all VPS operations:
 
 ```python
@@ -544,6 +549,11 @@ Instructions say:
 Check each criterion before marking complete.
 
 ## VPS API Usage
+
+**IMPORTANT:** Read the VPS API documentation in the framework:
+- `agent-repo-framework/knowledge/full/vps-api-full.md` - Complete API specification
+
+This explains endpoints, authentication, path handling, and common mistakes.
 
 All operations via VPS skill:
 
