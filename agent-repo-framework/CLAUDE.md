@@ -655,6 +655,77 @@ Whether you're:
 
 ---
 
+## 📜 Framework Origins & Source Material
+
+This framework was built FROM a working VPS multi-agent coordination system. Understanding the origins provides valuable context:
+
+### Source Repository
+
+The parent repository (`chat-with-websites/`) contains the **original implementation** of the VPS multi-agent system, including:
+
+**Original Knowledge Files:**
+- `knowledge/01-environment-benefits.md` - Claude Code environments
+- `knowledge/02-vps-multi-agent-architecture.md` - Core architecture
+- `knowledge/03-stop-hooks-worker-persistence.md` - Worker persistence
+- `knowledge/04-vps-api-specification.md` - VPS API documentation
+- `knowledge/05-task-queue-coordination.md` - Task queue design
+
+**Original Instructions:**
+- `CLAUDE.md` - VPS system agent instructions (how to build the system)
+- `README.md` - VPS system overview and architecture
+- `TO_DO.md` - Implementation steps for VPS multi-agent system
+
+### Extraction & Generalization Process
+
+This framework (agent-repo-framework) was created by:
+
+1. **Extracting knowledge** from the original VPS implementation
+2. **Creating two versions**:
+   - Concept versions (24-58% shorter, ideas-focused)
+   - Full versions (complete with code and syntax)
+3. **Generalizing patterns** beyond just VPS systems
+4. **Adding consultation workflow** (user-engagement/)
+5. **Creating templates** for different use cases
+6. **Building planning tools** (plan-generation/)
+
+### Relationship to Templates
+
+The `templates/vps-multi-agent/` template is directly inspired by the parent repository's implementation. If you want to:
+
+- **See a working VPS system**: Check the parent repo
+- **Understand the architecture deeply**: Read parent repo's knowledge/02 and 05
+- **Implement VPS coordination**: Use the vps-multi-agent template
+- **Build something similar**: Study the parent repo, then generalize
+
+### Additional Material in Parent Repo
+
+The parent repository also contains:
+
+**code-notes/** - Comprehensive Claude Code documentation including:
+- `CLAUDE.md` - Claude Code complete understanding
+- `SKILLS_ADVANCED_GUIDE.md` - Advanced skills patterns
+- `ASYNC_WORKFLOWS.md` - Async patterns
+- `UNLIMITED_WEEK_STRATEGY.md` - Productivity multiplication
+- `NONSTANDARD_USES.md` - Non-coding applications
+
+Much of this material was also extracted into this framework's knowledge base.
+
+### Why This Matters
+
+**Understanding the source helps you:**
+- See a working implementation (proof-of-concept)
+- Understand design decisions (why things are this way)
+- Adapt patterns to your needs (learn by example)
+- Trace concepts to real code (concrete examples)
+
+**When to reference parent repo:**
+- Building VPS multi-agent system (see working example)
+- Understanding context isolation deeply (see actual implementation)
+- Need complete VPS API usage examples (reference original)
+- Want to understand evolution of framework concepts
+
+---
+
 *This framework combines learnings from VPS multi-agent systems and Claude Code consultation patterns. It evolves continuously as new patterns emerge.*
 
 **Let's build something amazing! 🚀**
