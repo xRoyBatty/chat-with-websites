@@ -66,6 +66,163 @@ Streamlined guides with:
 
 ---
 
+## 🤖 How to Help Users (Agent Instructions)
+
+**When a user comes to this repository wanting to build a custom Claude Code repository, follow this workflow:**
+
+### Consultation Workflow (For Custom Repositories)
+
+**Step 1: Understand Their Needs**
+
+Read and ask questions from `user-engagement/questions/initial-discovery.md`:
+- What's their primary goal?
+- Existing workflow vs desired workflow?
+- Time available for setup and maintenance?
+- Privacy requirements?
+- Technical comfort level?
+
+Based on answers, determine: **Quick Deployment** vs **Custom Build** vs **Life OS**
+
+**Step 2: Match to Profile**
+
+Based on their needs, identify which profile from `user-engagement/profiles/` matches:
+- `researcher-student.md` - Research and learning focus
+- `busy-professional.md` - Time-optimized productivity
+- `hobbyist-developer.md` - Project-based exploration
+- `language-learner.md` - Language acquisition
+- `content-creator.md` - Content generation and documentation
+
+Read the matching profile to understand recommended patterns.
+
+**Step 3: Recommend Tools**
+
+Use `user-engagement/tool-suggestions/` to recommend appropriate tools:
+- `vps-guide.md` - Should they use VPS multi-agent?
+- `skills-guide.md` - Should they build custom skills?
+- `subagents-guide.md` - Should they use subagents/background tasks?
+- `decision-trees/when-to-use-what.md` - Decision flowchart
+
+Explain WHY each tool fits their needs.
+
+**Step 4: Generate or Select Plan**
+
+**If using template:**
+- Show them `templates/` options
+- Explain which template matches their profile
+- Walk through the template's README.md
+- Help them deploy with `deploy_me.sh`
+
+**If building custom:**
+- Choose appropriate template from `plan-generation/plan-templates/`:
+  - `basic-repo-plan.md` - Simple, focused repositories
+  - `life-os-plan.md` - Comprehensive integrated systems
+- Review `plan-generation/examples/goal-tracker-example.md` as reference
+- Customize the plan based on their specific needs
+- Create a customized `TO_DO.md` using `TO_DO_TEMPLATE.md`
+
+**Step 5: Implementation Support**
+
+If they want help implementing:
+- Reference `knowledge/full/` for specific implementations
+- Use `knowledge/concepts/` to explain architecture decisions
+- Follow the plan incrementally
+- Test after each phase
+- Document as you build
+
+### Quick-Path Workflow (For Template Deployment)
+
+**When user says:** "I want to track my goals" or similar specific need:
+
+1. **Identify template match:**
+   - Goal tracking → `templates/goal-tracker/`
+   - Knowledge management → `templates/personal-knowledge-base/`
+   - Everything integrated → `templates/life-os/`
+   - Multi-agent system → `templates/vps-multi-agent/`
+   - Custom/minimal → `templates/basic-repo/`
+
+2. **Explain the template:**
+   - Read the template's README.md
+   - Highlight key features
+   - Explain workflow and time commitment
+   - Set expectations
+
+3. **Help them deploy:**
+   - Guide them to `cd templates/[name]/`
+   - Explain `./deploy_me.sh` process
+   - Answer questions about customization
+   - Point to template's CLAUDE.md for post-deployment
+
+### Research/Learning Workflow (For Understanding Framework)
+
+**When user says:** "I want to understand subagents" or learning-focused request:
+
+1. **Start with concepts:**
+   - Point them to relevant `knowledge/concepts/` file
+   - Explain it's streamlined for quick understanding
+   - Highlight key takeaways
+
+2. **Offer deep-dive:**
+   - Mention corresponding `knowledge/full/` file for implementation
+   - Explain when they'd need the full version
+   - Provide examples of applications
+
+3. **Suggest experiments:**
+   - Recommend a template to try the concept
+   - Or a small custom implementation
+   - Learning by doing
+
+### Key Principles for Helping Users
+
+**1. Ask Discovery Questions First**
+- Don't assume you know what they need
+- Use the structured questions in `user-engagement/questions/`
+- Their stated want may differ from their actual need
+
+**2. Match Solution to Context**
+- Time available matters (Life OS = 1-2 hours setup, basic-repo = 5 minutes)
+- Technical comfort matters (recommend appropriate complexity)
+- Privacy requirements matter (VPS vs GitHub)
+
+**3. Explain the "Why"**
+- Don't just recommend templates, explain why they fit
+- Connect their goals to framework capabilities
+- Help them understand tradeoffs
+
+**4. Start Simple, Scale Up**
+- Better to start with basic-repo and add complexity
+- Than start with life-os and get overwhelmed
+- Progressive enhancement
+
+**5. Use File-Based Memory Pattern**
+- If building custom repo, always include datasets/ directory
+- Explain that "memory" = systematic file reading
+- Show examples from knowledge base
+
+**6. Emphasize Context Isolation**
+- If recommending multi-agent or subagents
+- ALWAYS explain context isolation (no conversation context)
+- Point to instruction file examples
+
+### Example Consultation
+
+**User:** "I want to build something to help me learn Spanish"
+
+**You:**
+1. Ask discovery questions (time available, current methods, goals)
+2. Match to `language-learner.md` profile
+3. Recommend tools:
+   - File-based memory for vocabulary (datasets/)
+   - Potential for spaced repetition (skills or subagents)
+   - Knowledge base structure for grammar notes
+4. Suggest starting with `personal-knowledge-base/` template
+5. Show how to customize for language learning:
+   - notes/ for vocabulary
+   - curricula/ for lessons
+   - progress/ for tracking
+6. Walk through deployment or help build custom
+
+---
+
 ## 🚀 Getting Started
 
 ### Option 1: Use Ready-Made Templates
